@@ -11,10 +11,10 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    name="Username"
-                    label="Login"
-                    type="text"
-                    v-model="username"
+                    name="email"
+                    label="Email"
+                    type="email"
+                    v-model="email"
                   ></v-text-field>
                   <v-text-field
                     id="password"
@@ -28,6 +28,7 @@
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click="submitForm">Login</v-btn>
+                <v-btn color="primary" class="color"><NuxtLink to="/admin/forgot">Home page</NuxtLink></v-btn>
               </v-card-actions>
             </v-card>
           </v-flex>
@@ -38,6 +39,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   layout: "auth",
   name: "Login",
@@ -46,17 +48,45 @@ export default {
   },
   data() {
     return {
-      username: null,
+      email: null,
       password: null,
     };
   },
   methods: {
-    submitForm() {
-      const login = { username: this.username, password: this.password };
-      console.log(login);
+     submitForm() {
+    axios.post(`http://127.0.0.1:8000/api/admin/login`, {
+          email : this.email,
+          password : this.password
+        })
+        .then((resp) => {
+          
+          if(resp?.data?.success== true )
+          {
+            localStorage.setItem('access_token', resp?.data?.data?.token)
+            this.$router.push(`/admin`);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
-  },
-};
+}
+}
 </script>
 
-<style></style>
+<style scoped>
+.v-application a{
+ color: #fff !important; 
+ text-decoration: none;
+}
+
+</style>
+
+<!-- export default defineNuxtRouteMiddleware((to, from) => {
+  const username = useState('username');
+
+  if (!username.value) {
+    process.client && alert('Sorry, you need to fill your username');
+    return navigateTo('/');
+  }
+}); -->
