@@ -187,7 +187,7 @@
             { text: 'Company Name', value: 'company_name' },
             { text: 'Company Type', value: 'company_type' },
             { text: 'Domain Name', value: 'domain_name' },
-            { text: 'Actions', value: 'actions', sortable: false },
+            // { text: 'Actions', value: 'actions', sortable: false },
           ],
           desserts: [],
           editedIndex: -1,
@@ -214,11 +214,12 @@
               Authorization: `Bearer ${auth}`,
           }
         }
-          const result = await axios.post('http://127.0.0.1:8000/api/admin/company-list',
-              {status:"1"},
-              config
-          )
-           this.desserts = result?.data?.data;
+        await this.$axios
+        .post("/admin/company-list", { status: "1" }, config)
+        .then((response) => {
+          console.log(response, "12323435456785654");
+          this.desserts = response?.data?.data;
+        });
         },
     
         computed: {
