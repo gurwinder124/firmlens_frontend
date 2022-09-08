@@ -115,23 +115,49 @@
         </v-dialog>
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">Are you sure you want to Decline this item?</v-card-title>
+            <v-card-title class="text-h5">Are you sure you want to D this item?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm()">OK</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
         </v-dialog>
       </v-toolbar>
     </template>
-     <template v-slot:item.actions="{ item }">
+    <template v-slot:item.request_status="{ item }">
+      <v-btn
+      class="accpet"
+        color="warning"
+        dark    
+        v-if="item.request_status == 1"
+      >
+        Pending
+      </v-btn>
       <v-btn
       class="accpet"
         color="primary"
         dark    
-        @click="accpet(item)"
+        v-if="item.request_status == 2"
+      >
+        accpet
+      </v-btn>
+      <v-btn
+      class="accpet"
+        color="red"
+        dark    
+        v-if="item.request_status == 3" 
+      >
+        Decline
+      </v-btn>
+    </template> 
+     <template v-slot:item.actions="{ item }" >
+      <v-btn
+      class="accpet"
+        color="primary"
+        dark    
+       v-if="item.request_status == 1"
       >
         Accept
         <v-icon
@@ -146,6 +172,7 @@
         class="accpet"
         color="red"
         dark
+        v-if="item.request_status == 1"
         @click="deleteItem(item)"
       >
         Decline
@@ -236,7 +263,9 @@
             {status:this.status},
             config
         )
-         this.desserts = result?.data?.data;
+        .then((response)=>{
+          this.desserts = response?.data?.data;
+        })
         },
      async accpet (item) {
           console.log(item.id,"item data ")
@@ -261,26 +290,13 @@
         },
   
         deleteItem (item) {
-          console.log("item  id",item.id)
-          this.dialogDelete = true;
+          this.editedIndex = this.desserts.indexOf(item)
+          this.editedItem = Object.assign({}, item)
+          this.dialogDelete = true
         },
   
-     async   deleteItemConfirm(item) {
-      // console.log(item.id)
-        // let auth = localStorage.getItem('access_token')
-        //   const config={
-        // headers:{
-        //     Authorization: `Bearer ${auth}`,
-        // }
-        //   }
-        //  const result =await axios.post('http://127.0.0.1:8000/api/admin/update-company-status',
-        //  {
-        //   status:"2",
-        //   id:item.id
-        // },
-        //   config
-        //  )
-        //  console.log(result.data.status);
+        deleteItemConfirm () {
+          this.desserts.splice(this.editedIndex, 1)
           this.closeDelete()
         },
   
@@ -316,6 +332,13 @@
 .accpet{
     font-size: 10px;
     width: 79px;
+}
+.status {
+  font-size: 10px;
+    width: 54px;
+    padding: 0px;
+    padding: 0px important;
+    height: 16px !important;
 }
 
 </style>
