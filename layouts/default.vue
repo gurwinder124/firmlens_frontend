@@ -80,7 +80,7 @@
         icon
         @click.stop="clipped = !clipped"
       >
-        <v-icon>mdi-application</v-icon>
+         <v-icon>mdi-application</v-icon>
       </v-btn>
       <v-btn
         icon
@@ -90,6 +90,10 @@
       </v-btn>
       <v-toolbar-title v-text="title" />
       <v-spacer />
+      <v-btn class="" 
+      v-on:click="logout()">
+        Logout
+      </v-btn>
       <v-btn
         icon
         @click.stop="rightDrawer = !rightDrawer"
@@ -146,7 +150,7 @@ export default {
         {
           icon:'mdi-home',
           title: 'Dashboard',
-          to:'/'
+          to:'/admin'
         }
       ],
       company: [
@@ -179,6 +183,18 @@ export default {
       rightDrawer: false,
       title: 'Firmlens'
     }
+  },
+  methods:
+{
+  logout()
+  {
+    console.log("button clicks")
   }
 }
+}
 </script>
+<style>
+  .v-btn--is-elevated {
+    box-shadow:none
+  }
+</style>

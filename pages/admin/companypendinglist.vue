@@ -209,6 +209,8 @@
        async mounted()
         {
           let auth = localStorage.getItem('access_token')
+          if(auth) 
+      {
         const config={
           headers:{
               Authorization: `Bearer ${auth}`,
@@ -220,6 +222,13 @@
           console.log(response, "12323435456785654");
           this.desserts = response?.data?.data;
         });
+      }
+      else{
+        this.$router.push(`/admin/login`);
+        console.log("usernot login")
+      }
+   
+      
         },
     
         computed: {

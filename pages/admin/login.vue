@@ -54,26 +54,23 @@ export default {
   },
   methods: {
      submitForm() {
-
-       this.$axios
+        this.$axios
         .post("/admin/login",{
           email : this.email,
           password : this.password
         })
       .then((resp) => {
-        console.log("resp",resp)
-          
-          if(resp?.data?.status== "success" )
+        console.log("resp",resp.data.data.token)
+          if(resp.data.status == "success" )
           {
             localStorage.setItem('access_token', resp?.data?.data?.token)
             this.$router.push(`/admin`);
           }
         })
+      } 
     },
 }
-}
 </script>
-
 <style scoped>
 .v-application a{
  color: #fff !important; 
@@ -81,12 +78,3 @@ export default {
 }
 
 </style>
-
-<!-- export default defineNuxtRouteMiddleware((to, from) => {
-  const username = useState('username');
-
-  if (!username.value) {
-    process.client && alert('Sorry, you need to fill your username');
-    return navigateTo('/');
-  }
-}); -->

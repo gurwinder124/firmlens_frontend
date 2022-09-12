@@ -112,6 +112,8 @@
         color="primary"
         dark
         v-if="item.request_status == 1"
+        @click="accpet(item)"
+
       >
         Accept
         <v-icon class="subtitle-2" dark right>
@@ -174,8 +176,18 @@ export default {
       protein: 0,
     },
   }),
-  async mounted() {
-    this.onload();
+
+  mounted(){
+    let auth = localStorage.getItem("access_token");
+    if(auth) 
+      {
+        console.log("user login")
+         this.onload();
+      }
+      else{
+        this.$router.push(`/admin/login`);
+        console.log("usernot login")
+      }
   },
 
   computed: {
@@ -195,6 +207,8 @@ export default {
   methods: {
     async onload() {
       let auth = localStorage.getItem("access_token");
+    
+
       const config = {
         headers: {
           Authorization: `Bearer ${auth}`,
@@ -221,6 +235,7 @@ export default {
           id: item.id,
         }, config)
         .then((response) => {
+          console.log(response)
           this.desserts = response?.data?.data;
           if (response.data.code == 200) {
         this.onload();
@@ -294,7 +309,8 @@ export default {
   font-size: 10px;
   width: 54px;
   padding: 0px;
-  padding: 0px important;
+  padding: 0px !important;
+  cursor: default;
   height: 16px !important;
 }
 </style>
