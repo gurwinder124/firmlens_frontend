@@ -18,6 +18,8 @@ export default {
     ]
   },
 
+  target: 'server',
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
   ],
@@ -40,7 +42,8 @@ export default {
     '@nuxtjs/axios',
   ],
   axios:{
-   baseURL:'http://127.0.0.1:8000/api'
+  //  baseURL:'http://127.0.0.1:8000/api'
+   baseURL:'http://stgps.appsndevs.com/firmlens-backend/api/'
   },
 
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify

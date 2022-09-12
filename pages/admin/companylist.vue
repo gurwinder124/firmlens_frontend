@@ -138,8 +138,10 @@
 
 <script>
 import axios from "axios";
+
 export default {
   data: () => ({
+    data1:"",
     dialog: false,
     dialogDelete: false,
     headers: [
@@ -226,13 +228,31 @@ export default {
         });
     },
 
+  
     deleteItem(item) {
-      this.dialogDelete = true;
-
-      
+      this.dialogDelete = true; 
+      this.data1=item.id
     },
-
+  
     deleteItemConfirm() {
+      console.log(this.data1)
+      let auth = localStorage.getItem("access_token");
+      const config = {
+        headers: {
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+       this.$axios
+        .post("/admin/update-company-status",{
+          status: "3",
+          id: this.data1,
+        }, config)
+        .then((response) => {
+          this.desserts = response?.data?.data;
+          if (response.data.code == 200) {
+        this.onload();
+          }
+        });
       // this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
     },

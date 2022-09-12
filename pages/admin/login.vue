@@ -54,21 +54,21 @@ export default {
   },
   methods: {
      submitForm() {
-    axios.post(`http://127.0.0.1:8000/api/admin/login`, {
+
+       this.$axios
+        .post("/admin/login",{
           email : this.email,
           password : this.password
         })
-        .then((resp) => {
+      .then((resp) => {
+        console.log("resp",resp)
           
-          if(resp?.data?.success== true )
+          if(resp?.data?.status== "success" )
           {
             localStorage.setItem('access_token', resp?.data?.data?.token)
             this.$router.push(`/admin`);
           }
         })
-        .catch((error) => {
-          console.log(error);
-        });
     },
 }
 }
