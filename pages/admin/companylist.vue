@@ -106,6 +106,7 @@
 import axios from "axios";
 
 export default {
+  layout: "default",
   data: () => ({
     data1: "",
     dialog: false,
@@ -271,6 +272,9 @@ export default {
       }
       this.close();
     },
+  },
+  mounted(){
+this.onload();
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-      <v-main>
+      <v-content>
         <v-container fluid fill-height>
           <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
@@ -34,16 +34,17 @@
             </v-flex>
           </v-layout>
         </v-container>
-      </v-main>
+      </v-content>
     </v-app>
   </template>
   
   <script>
+  import axios from 'axios'
   export default {
-    layout: 'auth',
-    name: "login",
+    layout: "auth",
+    name: "Login",
     props: {
-      source: String, 
+      source: String,
     },
     data() {
       return {
@@ -59,11 +60,14 @@
             password : this.password
           })
         .then((resp) => {
-          console.log("resp",resp)
-            if(resp?.data?.status== "success" )
+          console.log("resp",resp.data.success)
+            
+            if(resp?.data?.success== true )
             {
-              localStorage.setItem('user_access_token ', resp?.data?.data?.token)
-              this.$router.push(`/user`);
+              localStorage.setItem('user_access_token', resp?.data?.data?.token)
+              console.log(resp.data.data.user.id,'user_company_id')
+              localStorage.setItem('user_company_id', resp?.data?.data?.user?.company_id)
+              this.$router.push(`/user/employeelist`);
             }
           })
       },
