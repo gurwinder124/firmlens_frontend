@@ -63,6 +63,23 @@
           </v-list-item-content>
         </v-list-item>
     </v-list>
+    <v-list>
+      <v-list-item
+          v-for="(item, i) in profile "
+          :key="i"
+          :to="item.to"
+          router
+          exact
+        >
+          <v-list-item-action>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title v-text="item.title" />
+          </v-list-item-content>
+        </v-list-item>
+    </v-list>
+
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
@@ -91,7 +108,7 @@
       <v-toolbar-title v-text="title" />
       <v-spacer />
       <v-btn class="" 
-      v-on:click="logout()">
+      v-on:click="logout">
         Logout
       </v-btn>
       <v-btn
@@ -177,6 +194,13 @@ export default {
           to: '/admin/userlist'
         },
       ],
+      profile: [
+        {
+          icon: 'mdi-account-multiple',
+          title: 'profile',
+          to: '/admin/profile'
+        },
+      ],
     
       miniVariant: false,
       right: true,
@@ -186,11 +210,24 @@ export default {
   },
   methods:
 {
-  logout()
-  {
-    console.log("button clicks")
+   logout() {
+      let auth = localStorage.getItem("access_token")
+      const config = {
+        headers: {
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+      console.log(config)
+       this.$axios
+        .post("/admin/admin-logout",{},config)
+        .then((response) => {
+          console.log(response, "12323435456785654");   
+          localStorage.clear();   
+        }).catch((err)=>{
+          console.log(err,"error massge")
+        });
+    },
   }
-}
 }
 </script>
 <style>

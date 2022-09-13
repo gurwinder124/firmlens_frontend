@@ -18,6 +18,7 @@ export default {
     ]
   },
 
+
   target: 'server',
 
   // Global CSS: https://go.nuxtjs.dev/config-css
