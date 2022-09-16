@@ -9,11 +9,12 @@
     >
     <v-list>
       <v-list-item
-          v-for="(item, i) in dashboard"
-          :key="i"
+          v-for="(item) in dashboard"
+          :key="5"
           :to="item.to"
           router
           exact
+          class="text-decoration-none"
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -33,11 +34,12 @@
 
         <v-list>
         <v-list-item
-          v-for="(item, i) in company"
-          :key="i"
+          v-for="(item) in company"
+          :key="4"
           :to="item.to"
           router
           exact
+          class="text-decoration-none"
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -49,11 +51,12 @@
       </v-list> 
       </v-list-group>
       <v-list-item
-          v-for="(item, i) in items"
-          :key="i"
+          v-for="(item) in items"
+          :key="3"
           :to="item.to"
           router
           exact
+          class="text-decoration-none"
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -63,13 +66,14 @@
           </v-list-item-content>
         </v-list-item>
     </v-list>
-    <v-list>
+    <!-- <v-list>
       <v-list-item
-          v-for="(item, i) in profile "
-          :key="i"
+          v-for="(item) in profile "
+          :key="2"
           :to="item.to"
           router
           exact
+          class="text-decoration-none"
         >
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -78,7 +82,7 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-    </v-list>
+    </v-list> -->
 
     </v-navigation-drawer>
     <v-app-bar
@@ -194,13 +198,13 @@ export default {
           to: '/admin/userlist'
         },
       ],
-      profile: [
-        {
-          icon: 'mdi-account-multiple',
-          title: 'profile',
-          to: '/admin/profile'
-        },
-      ],
+      // profile: [
+      //   {
+      //     icon: 'mdi-account-multiple',
+      //     title: 'profile',
+      //     to: '/admin/profile'
+      //   },
+      // ],
     
       miniVariant: false,
       right: true,
@@ -214,6 +218,7 @@ export default {
       let auth = localStorage.getItem("access_token")
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };

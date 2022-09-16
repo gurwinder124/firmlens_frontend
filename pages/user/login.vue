@@ -1,6 +1,6 @@
 <template>
     <v-app id="inspire">
-      <v-content>
+      <v-main>
         <v-container fluid fill-height>
           <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
@@ -34,7 +34,7 @@
             </v-flex>
           </v-layout>
         </v-container>
-      </v-content>
+      </v-main>
     </v-app>
   </template>
   
@@ -54,11 +54,17 @@
     },
     methods: {
        submitForm() {
+        const config = {
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }
          this.$axios
           .post("/v1/login",{
             email : this.email,
             password : this.password
-          })
+          },config
+          )
         .then((resp) => {
           console.log("resp",resp.data.success)
             
@@ -71,6 +77,16 @@
             }
           })
       },
+  },
+  mounted() {
+    let auth = localStorage.getItem("user_access_token");
+    if (auth) {
+      console.log("user login")
+      this.$router.push(`/user`);
+    }
+    else {
+      console.log("user not  login")
+    }
   }
   }
   </script>

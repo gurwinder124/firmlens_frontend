@@ -60,7 +60,7 @@
       </v-toolbar>
       <template>
         <div class="text-center ma-2 v-snack">
-          <v-snackbar v-model="snackbar" class="v-snackbar position"> 
+          <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position"> 
             {{ text }}
 
             <template v-slot:action="{ attrs }">
@@ -106,7 +106,7 @@
 import axios from "axios";
 
 export default {
-  layout: "default",
+  layout: "admin",
   data: () => ({
     data1: "",
     dialog: false,
@@ -178,6 +178,7 @@ export default {
 
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -193,6 +194,7 @@ export default {
       let auth = localStorage.getItem("access_token");
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -223,6 +225,7 @@ export default {
       let auth = localStorage.getItem("access_token");
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -238,8 +241,9 @@ export default {
             this.snackbar = true;
             this.text = "Company Decline SuccessFully"
           }
-          else{            this.snackbar = true;
-                        this.text = "Something Wrong Please Check"
+          else{   
+                     this.snackbar = true;
+                       this.text = "Something Wrong Please Check"
           }
         }).catch((err)=>{
           console.log(err)
@@ -295,8 +299,7 @@ this.onload();
 }
 
 
-.v-snackbar
-{
+/* .v-snackbar-toast {
   bottom: 208px !important; 
     display: flex !important;
     font-size: 0.875rem !important;
@@ -305,5 +308,5 @@ this.onload();
     pointer-events: none !important;
     right: 0 !important;
     width: 100% !important;
-}
+} */
 </style>

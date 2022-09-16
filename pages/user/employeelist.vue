@@ -171,6 +171,7 @@ export default {
       let auth = localStorage.getItem("user_access_token");
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -202,6 +203,7 @@ export default {
       let company_id = localStorage.getItem("user_company_id");
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -213,29 +215,29 @@ export default {
         });
     },
     async accpet(item) {
-      this.editedIndex=1;
+      // this.editedIndex=1;
       console.log(item.id, "item data ");
-      let auth = localStorage.getItem("user_access_token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-      await this.$axios
-        .post(
-          "/v1/create-sub-user",
-          {
-            status: "2",
-            id: item.id,
-          },
-          config
-        )
-        .then((response) => {
-          this.desserts = response?.data?.data;
-          if (response.data.code == 200) {
-            this.onload();
-          }
-        });
+      // let auth = localStorage.getItem("user_access_token");
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${auth}`,
+      //   },
+      // };
+      // await this.$axios
+      //   .post(
+      //     "/v1/create-sub-user",
+      //     {
+      //       status: "2",
+      //       id: item.id,
+      //     },
+      //     config
+      //   )
+      //   .then((response) => {
+      //     this.desserts = response?.data?.data;
+      //     if (response.data.code == 200) {
+      //       this.onload();
+      //     }
+      //   });
     },
 
     deleteItem(item) {
@@ -248,6 +250,7 @@ export default {
       let auth = localStorage.getItem("access_token");
       const config = {
         headers: {
+          'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
@@ -311,7 +314,7 @@ export default {
   font-size: 10px;
   width: 54px;
   padding: 0px;
-  padding: 0px important;
+  padding: 0px !important;
   height: 16px !important;
 }
 </style>

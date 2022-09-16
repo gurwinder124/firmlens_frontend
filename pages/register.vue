@@ -1,43 +1,66 @@
 <template>
-  <form class="form">
-    <h2> Company Register</h2>
-    <div class="d-flex mt-4">
-      <v-text-field class="m-20" v-model="companyName" :error-messages="companyNameErrors" :counter="10"
-        label="Company Name" required @input="$v.companyName.$touch()" @blur="$v.companyName.$touch()"></v-text-field>
-      <v-text-field v-model="companyType" :error-messages="companyTypeErrors" :counter="10" label="Company Type"
-        required @input="$v.companyType.$touch()" @blur="$v.companyType.$touch()"></v-text-field>
-    </div>
-    <div class="d-flex">
-      <v-text-field class="m-20" v-model="Name" :error-messages="NameErrors" :counter="10" label="Name" required
-        @input="$v.Name.$touch()" @blur="$v.Name.$touch()"></v-text-field>
-      <v-text-field v-model="designation" :error-messages="designationErrors" :counter="10" label="designation Type"
-        required @input="$v.designation.$touch()" @blur="$v.designation.$touch()"></v-text-field>
+  <div class="d-flex height">
+    <div class="firstdiv">
+      <div class="main-div">
+        <div class="d-flex justify-content-between align-items-center">
+          <h1 class="text-white">Firmlens</h1><span>
+            <v-icon class="text-white">mdi-home</v-icon>
+          </span>
+        </div>
+        <p class="text-white content-text">We are LIVE in
 
-    </div>
-    <div class="d-flex">
-      <v-text-field class="m-20" v-model="email" :error-messages="emailErrors" label="E-mail" required
-        @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-      <v-text-field v-model="dominName" :error-messages="dominNameErrors" :counter="10" label="Domain Name" required
-        @input="$v.dominName.$touch()" @blur="$v.dominName.$touch()"></v-text-field>
-    </div>
-    <div class="d-flex">
-      <v-text-field v-model="password" type="password"
- :error-messages="passwordErrors" :counter="10" label="password" required
-        @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
-      <!-- <v-text-field class="m-20"   name="password" label="Password"  v-model="password"></v-text-field> -->
+          Chandigarh CCR & Gurgaon
+
+          & will soon launch in 23 cities!!</p>
+        <p class="text-white content-text">Click on below and share your details
+          to be part of our exclusive network</p>
+        <v-btn rounded class="text-dark px-4 py-4   mr-4 fs-5">get connected</v-btn>
+      </div>
     </div>
 
-   
-    <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="Do you agree?" required
-      @change="$v.checkbox.$touch()" @blur="$v.checkbox.$touch()"></v-checkbox>
+    <form class="form">
+      <h2> Company Registration</h2>
+      <p>Start your journey with us</p>
+      <div class="d-flex mt-2 ">
+        <v-text-field class="m-20" v-model="companyName" :error-messages="companyNameErrors" :counter="10"
+          label="Company Name" required @input="$v.companyName.$touch()" @blur="$v.companyName.$touch()"></v-text-field>
+        <v-text-field v-model="companyType" :error-messages="companyTypeErrors" :counter="10" label="Company Type"
+          required @input="$v.companyType.$touch()" @blur="$v.companyType.$touch()"></v-text-field>
+      </div>
+      <div class="d-flex">
+        <v-text-field class="m-20" v-model="Name" :error-messages="NameErrors" :counter="10" label="Name" required
+          @input="$v.Name.$touch()" @blur="$v.Name.$touch()"></v-text-field>
+        <v-text-field v-model="designation" :error-messages="designationErrors" :counter="10" label="designation Type"
+          required @input="$v.designation.$touch()" @blur="$v.designation.$touch()"></v-text-field>
 
-    <v-btn class="mr-4" @click="submit">
-      submit
-    </v-btn>
-    <v-btn @click="clear">
-      clear
-    </v-btn>
-  </form>
+      </div>
+      <div class="d-flex">
+        <v-text-field class="m-20" v-model="email" :error-messages="emailErrors" label="E-mail" required
+          @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
+        <v-text-field v-model="dominName" :error-messages="dominNameErrors" :counter="10" label="Domain Name" required
+          @input="$v.dominName.$touch()" @blur="$v.dominName.$touch()"></v-text-field>
+      </div>
+      <div class="d-flex">
+        <v-text-field v-model="password" type="password" :error-messages="passwordErrors" :counter="10" label="password"
+          required @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
+        <!-- <v-text-field class="m-20"   name="password" label="Password"  v-model="password"></v-text-field> -->
+      </div>
+
+
+      <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="Do you agree?" required
+        @change="$v.checkbox.$touch()" @blur="$v.checkbox.$touch()"></v-checkbox>
+
+      <v-btn class="mr-4" @click="submit">
+        submit
+      </v-btn>
+      <v-btn @click="clear">
+        clear
+      </v-btn>
+      <p class="mt-3">Already have an account <NuxtLink to="/login">Login</NuxtLink>
+      </p>
+    </form>
+  </div>
+
 </template>
 <script>
 import { validationMixin } from 'vuelidate'
@@ -53,7 +76,7 @@ export default {
     Name: { required, maxLength: maxLength(10) },
     dominName: { required },
     email: { required, email },
-    password:{required},
+    password: { required },
     checkbox: {
       checked(val) {
         return val
@@ -68,7 +91,7 @@ export default {
     designation: '',
     email: '',
     dominName: "",
-    password:"",
+    password: "",
     checkbox: false,
   }),
 
@@ -131,22 +154,26 @@ export default {
   methods: {
     submit() {
       this.$v.$touch()
-
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+        }
+      }
       this.$axios
-        .post("/v1/registerCompany",{
-          company_name:this.companyName,
-          company_type:this.companyType,
-          domain_name:this.dominName,
-          password:this.password,
-          designation:this.designation,
-          name:this.Name,
-          email:this.email,
-        })
-      .then((resp) => {
-        console.log(resp)
+        .post("/v1/registerCompany", {
+          company_name: this.companyName,
+          company_type: this.companyType,
+          domain_name: this.dominName,
+          password: this.password,
+          designation: this.designation,
+          name: this.Name,
+          email: this.email,
+        }, config)
+        .then((resp) => {
+          console.log(resp)
         })
 
-     
+
     },
     clear() {
       this.$v.$reset()
@@ -162,19 +189,38 @@ export default {
 };
 </script>
 <style scoped>
-.d-flex {
-  display: flex;
-}
+
 
 .form {
-  width: 50%;
-  text-align: center;
+  width: 40%;
   align-items: center;
   margin: 6% auto;
 }
 
 .m-20 {
   margin-right: 15%;
+}
+
+.firstdiv {
+  background-image: url(https://ueibi.com/images/logon_secreen.png);
+  width: 35%;
+}
+
+.main-div {
+  margin: 50px auto;
+  display: flex;
+  flex-direction: column;
+  padding: 49px;
+  text-align: left;
+}
+
+.content-text {
+  margin-bottom: 22px;
+  padding: 27px 0px;
+}
+
+.height {
+  height: 100vh;
 }
 </style>
   

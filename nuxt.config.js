@@ -3,7 +3,7 @@ export default {
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     titleTemplate: '%s - firmlens',
-    title: 'firmlens',
+    title: 'Firmlens',
     htmlAttrs: {
       lang: 'en'
     },
@@ -14,7 +14,7 @@ export default {
       { name: 'format-detection', content: 'telephone=no' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/firmlens/favicon.ico' }
     ]
   },
 
@@ -23,6 +23,9 @@ export default {
 
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
+    // this line include bootstrap.css in each html file on generate 
+    'bootstrap/dist/css/bootstrap.css',
+    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -65,8 +68,12 @@ export default {
       }
     }
   },
+  router: {
+    base: '/firmlens/'
+  },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+    publicPath: 'https://stgn.appsndevs.com/firmlens/'
   }
 }

@@ -46,11 +46,18 @@ export default {
   },
   methods: {
     submitForm() {
+      const config = {
+      headers: {
+        'Content-type': 'application/json',
+      }
+    }
       this.$axios
         .post("/admin/login", {
           email: this.email,
           password: this.password
-        })
+        },
+        config
+        )
         .then((resp) => {
           console.log("resp", resp.data.data.token)
           if (resp.data.status == "success") {

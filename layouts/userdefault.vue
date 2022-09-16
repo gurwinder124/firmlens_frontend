@@ -9,51 +9,12 @@
       >
       <v-list>
         <v-list-item
-            v-for="(item, i) in dashboard"
-            :key="i"
+            v-for="(item) in dashboard"
+            :key="item.title"
             :to="item.to"
             router
             exact
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-  
-        <!-- <v-list-group
-          :value="false"
-          prepend-icon="mdi-account-circle"
-        >
-          <template v-slot:activator>
-            <v-list-item-title>Company List</v-list-item-title>
-          </template>
-  
-          <v-list>
-          <v-list-item
-            v-for="(item, i) in company"
-            :key="i"
-            :to="item.to"
-            router
-            exact
-          >
-            <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-list> 
-        </v-list-group> -->
-        <v-list-item
-            v-for="(item, i) in items"
-            :key="i"
-            :to="item.to"
-            router
-            exact
+            class="text-decoration-none"
           >
             <v-list-item-action>
               <v-icon>{{ item.icon }}</v-icon>
@@ -134,6 +95,7 @@
   <script>
   import Vue from 'vue'
   import axios from 'axios'
+import { title } from 'process'
   Vue.use(axios)
   export default {
     name: 'userdefault',
@@ -146,7 +108,17 @@
           {
             icon:'mdi-home',
             title: 'Dashboard',
-            to:'/'
+            to:'/user'
+          },
+          {
+            icon: 'mdi-account-multiple',
+            title: 'Employee List',
+            to: '/user/employeelist'
+          },
+          {
+            icon:'mdi-account-multiple',
+            title:'Find Company',
+            to:'/user/findCompany'
           }
         ],
       
@@ -156,6 +128,11 @@
             title: 'Employee List',
             to: '/user/employeelist'
           },
+          {
+            icon:'mdi-account-multiple',
+            title:'Find Company',
+            to:'/user/findCompany'
+          }
         ],
       
         miniVariant: false,

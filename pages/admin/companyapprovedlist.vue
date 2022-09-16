@@ -127,6 +127,7 @@ export default {
     if (auth) {
       const config = {
       headers: {
+        'Content-type': 'application/json',
         Authorization: `Bearer ${auth}`,
       }
     }
