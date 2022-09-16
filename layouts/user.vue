@@ -18,9 +18,23 @@
         </v-app-bar>
        
       </div> -->
+      <div class="Thbody">
+      <div class="d-flex  align-center justify-content-between container">
+        <div>
+          <button class="h1 text-white">Firmlens</button>
+        </div>
+        <div class="navmenu">
+          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="home">Home</v-btn>
+          <v-btn class="bg-transparent text-light mr-4 fs-5"  v-on:click="blog">Blog</v-btn>
+          <v-btn class="bg-transparent text-light mr-4 fs-5"  v-on:click="Contact">Contact us</v-btn>
+          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="signup">Signup</v-btn>
+          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="login">Login</v-btn>
+        </div>
+      </div>
       <div>
           <nuxt/>
         </div>
+      </div>
     </template>
 
 <script>
@@ -40,6 +54,14 @@
             console.log("click");
             this.$router.push(`/home`);
         },
+        blog() {
+            console.log("click");
+            this.$router.push(`/blog`);
+        },
+        Contact() {
+            console.log("click");
+            this.$router.push(`/contact`);
+        },
     },
     };
     </script>
@@ -52,5 +74,11 @@
           justify-content: space-around;
           cursor:pointer;
       }
+      .Thbody {
+  background-image: url(https://ueibi.com/images/logon_secreen.png);
+  /* background-color: #607DF9; */
+  background-size: cover;
+  height: 100vh;
+}
     </style>
   

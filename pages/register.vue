@@ -22,33 +22,33 @@
       <h2> Company Registration</h2>
       <p>Start your journey with us</p>
       <div class="d-flex mt-2 ">
-        <v-text-field class="m-20" v-model="companyName" :error-messages="companyNameErrors" :counter="10"
-          label="Company Name" required @input="$v.companyName.$touch()" @blur="$v.companyName.$touch()"></v-text-field>
-        <v-text-field v-model="companyType" :error-messages="companyTypeErrors" :counter="10" label="Company Type"
-          required @input="$v.companyType.$touch()" @blur="$v.companyType.$touch()"></v-text-field>
+        <v-text-field class="m-20" filled v-model="companyName" :error-messages="companyNameErrors" :counter="10"
+          label="Company Name" required @input="$v.companyName.$touch()"></v-text-field>
+        <v-text-field v-model="companyType" filled :error-messages="companyTypeErrors" :counter="10" label="Company Type"
+          required @input="$v.companyType.$touch()" ></v-text-field>
       </div>
       <div class="d-flex">
-        <v-text-field class="m-20" v-model="Name" :error-messages="NameErrors" :counter="10" label="Name" required
+        <v-text-field class="m-20" v-model="Name" filled :error-messages="NameErrors" :counter="10" label="Name" required
           @input="$v.Name.$touch()" @blur="$v.Name.$touch()"></v-text-field>
-        <v-text-field v-model="designation" :error-messages="designationErrors" :counter="10" label="designation Type"
-          required @input="$v.designation.$touch()" @blur="$v.designation.$touch()"></v-text-field>
+        <v-text-field v-model="designation" filled :error-messages="designationErrors" :counter="10" label="designation Type"
+          required @input="$v.designation.$touch()"></v-text-field>
 
       </div>
       <div class="d-flex">
-        <v-text-field class="m-20" v-model="email" :error-messages="emailErrors" label="E-mail" required
+        <v-text-field class="m-20" v-model="email" filled :error-messages="emailErrors" label="E-mail" required
           @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-        <v-text-field v-model="dominName" :error-messages="dominNameErrors" :counter="10" label="Domain Name" required
-          @input="$v.dominName.$touch()" @blur="$v.dominName.$touch()"></v-text-field>
+        <v-text-field v-model="dominName" filled :error-messages="dominNameErrors" :counter="10" label="Domain Name" required
+          @input="$v.dominName.$touch()"></v-text-field>
       </div>
       <div class="d-flex">
-        <v-text-field v-model="password" type="password" :error-messages="passwordErrors" :counter="10" label="password"
-          required @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
+        <v-text-field v-model="password" filled type="password" :error-messages="passwordErrors" :counter="10" label="password"
+          required @input="$v.password.$touch()" ></v-text-field>
         <!-- <v-text-field class="m-20"   name="password" label="Password"  v-model="password"></v-text-field> -->
       </div>
 
 
-      <v-checkbox v-model="checkbox" :error-messages="checkboxErrors" label="Do you agree?" required
-        @change="$v.checkbox.$touch()" @blur="$v.checkbox.$touch()"></v-checkbox>
+      <v-checkbox v-model="checkbox" filled :error-messages="checkboxErrors" label="Do you agree?" required
+        @change="$v.checkbox.$touch()"></v-checkbox>
 
       <v-btn class="mr-4" @click="submit">
         submit
@@ -66,7 +66,7 @@
 import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
 export default {
-  layout: 'user',
+  layout: 'auth',
   name: "registerPage",
   mixins: [validationMixin],
   validations: {

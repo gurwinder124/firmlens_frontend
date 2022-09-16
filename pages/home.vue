@@ -1,19 +1,6 @@
 <template>
 
   <v-main>
-    <div class="Thbody">
-      <div class="d-flex  align-center justify-content-between container">
-        <div>
-          <button class="h1 text-white">Firmlens</button>
-        </div>
-        <div class="navmenu">
-          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="home">Home</v-btn>
-          <v-btn class="bg-transparent text-light mr-4 fs-5">Blog</v-btn>
-          <v-btn class="bg-transparent text-light mr-4 fs-5">Contact us</v-btn>
-          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="signup">Signup</v-btn>
-          <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="login">Login</v-btn>
-        </div>
-      </div>
       <div class="ml-6 d-flex align-center justify-content-between container">
         <div class="align-center justify-content-between margin-auto">
           <h1 class="text-white">Build stunning websites</h1>
@@ -32,7 +19,7 @@
           <img src="https://nextkit-nuxtjs-free-uikit.vercel.app/_nuxt/img/banner-img.4218b42.png" alt="">
         </div>
       </div>
-    </div>
+
     <div class="mini-spacer">
       <div class="container">
         <div class="row justify-content-center">

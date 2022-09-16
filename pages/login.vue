@@ -43,7 +43,7 @@
 import { validationMixin } from 'vuelidate'
 import { required, email } from 'vuelidate/lib/validators'
 export default {
-  layout: 'user',
+  layout: 'auth',
   name: "loginPage",
   mixins: [validationMixin],
   validations: {
