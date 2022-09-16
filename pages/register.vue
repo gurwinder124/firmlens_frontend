@@ -22,26 +22,26 @@
       <h2> Company Registration</h2>
       <p>Start your journey with us</p>
       <div class="d-flex mt-2 ">
-        <v-text-field class="m-20" filled v-model="companyName" :error-messages="companyNameErrors" :counter="10"
+        <v-text-field class="m-20" filled v-model="companyName" :error-messages="companyNameErrors" :counter="20"
           label="Company Name" required @input="$v.companyName.$touch()"></v-text-field>
-        <v-text-field v-model="companyType" filled :error-messages="companyTypeErrors" :counter="10" label="Company Type"
+        <v-text-field v-model="companyType" filled :error-messages="companyTypeErrors"  label="Company Type"
           required @input="$v.companyType.$touch()" ></v-text-field>
       </div>
       <div class="d-flex">
-        <v-text-field class="m-20" v-model="Name" filled :error-messages="NameErrors" :counter="10" label="Name" required
+        <v-text-field class="m-20" v-model="Name" filled :error-messages="NameErrors" :counter="15" label="Name" required
           @input="$v.Name.$touch()" @blur="$v.Name.$touch()"></v-text-field>
-        <v-text-field v-model="designation" filled :error-messages="designationErrors" :counter="10" label="designation Type"
+        <v-text-field v-model="designation" filled :error-messages="designationErrors" label="designation Type"
           required @input="$v.designation.$touch()"></v-text-field>
 
       </div>
       <div class="d-flex">
         <v-text-field class="m-20" v-model="email" filled :error-messages="emailErrors" label="E-mail" required
           @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-        <v-text-field v-model="dominName" filled :error-messages="dominNameErrors" :counter="10" label="Domain Name" required
+        <v-text-field v-model="dominName" filled :error-messages="dominNameErrors" label="Domain Name" required
           @input="$v.dominName.$touch()"></v-text-field>
       </div>
       <div class="d-flex">
-        <v-text-field v-model="password" filled type="password" :error-messages="passwordErrors" :counter="10" label="password"
+        <v-text-field v-model="password" filled type="password" :error-messages="passwordErrors"  label="password"
           required @input="$v.password.$touch()" ></v-text-field>
         <!-- <v-text-field class="m-20"   name="password" label="Password"  v-model="password"></v-text-field> -->
       </div>
@@ -70,10 +70,10 @@ export default {
   name: "registerPage",
   mixins: [validationMixin],
   validations: {
-    companyName: { required, maxLength: maxLength(10) },
+    companyName: { required, maxLength: maxLength(20) },
     companyType: { required },
     designation: { required },
-    Name: { required, maxLength: maxLength(10) },
+    Name: { required, maxLength: maxLength(15) },
     dominName: { required },
     email: { required, email },
     password: { required },
