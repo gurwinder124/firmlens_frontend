@@ -39,7 +39,7 @@
   </template>
   
   <script>
-  import axios from 'axios'
+  // import axios from 'axios'
   export default {
     layout: "auth",
     name: "Login",
@@ -73,12 +73,13 @@
               localStorage.setItem('user_access_token', resp?.data?.data?.token)
               console.log(resp.data.data.user.id,'user_company_id')
               localStorage.setItem('user_company_id', resp?.data?.data?.user?.company_id)
-              this.$router.push(`/user/employeelist`);
+              this.$router.push(`/user`);
             }
           })
       },
   },
   mounted() {
+    console.log("page load")
     let auth = localStorage.getItem("user_access_token");
     if (auth) {
       console.log("user login")

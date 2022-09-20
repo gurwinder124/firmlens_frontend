@@ -46,13 +46,13 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to Decline this Company</v-card-title>
+        <v-dialog v-model="dialogDelete" max-width="576px" class="py-4">
+          <v-card class="py-5">
+            <v-card-title class="text-h5">Are you sure you want to Decline the Company?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm()">OK</v-btn>
+              <v-btn class="btn btn-success"  text @click="closeDelete">Cancel</v-btn>
+              <v-btn class="btn btn-danger"  text @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -111,8 +111,7 @@ export default {
     data1: "",
     dialog: false,
     dialogDelete: false,
-    snackbar: false,
-    text: ``,
+ 
     headers: [
       {
         text: "S.no.",
@@ -174,8 +173,6 @@ export default {
   methods: {
     async onload() {
       let auth = localStorage.getItem("access_token");
-
-
       const config = {
         headers: {
           'Content-type': 'application/json',
@@ -185,8 +182,9 @@ export default {
       await this.$axios
         .post("/admin/company-list", { status: this.status }, config)
         .then((response) => {
-          console.log(response, "12323435456785654");
-          this.desserts = response?.data?.data;
+          // console.log(response, "12323435456785654");
+          this.desserts = response?.data?.data.company_list;
+          // console.log(this.desserts, "12323435456785654");
         });
     },
     async accpet(item) {
@@ -211,6 +209,10 @@ export default {
             this.text = "Company Accpet SuccessFully"
             this.onload();
           }
+        }).catch((err)=>{
+          console.log("Something Wrong")
+          this.snackbar = true;
+            this.text = "Company Accpet SuccessFully"
         });
     },
 
@@ -235,20 +237,20 @@ export default {
           id: this.data1,
         }, config)
         .then((response) => {
+          console.log(response)
           this.desserts = response?.data?.data;
           if (response.data.code == 200) {
-            this.onload();
             this.snackbar = true;
-            this.text = "Company Decline SuccessFully"
+            this.text = "Company Decline SuccessFully";
+            this.onload();
           }
           else{   
-                     this.snackbar = true;
-                       this.text = "Something Wrong Please Check"
+              this.snackbar = true;
+              this.text = "Something Wrong Please Check";
           }
         }).catch((err)=>{
           console.log(err)
         });
-      // this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -298,15 +300,4 @@ this.onload();
   height: 16px !important;
 }
 
-
-/* .v-snackbar-toast {
-  bottom: 208px !important; 
-    display: flex !important;
-    font-size: 0.875rem !important;
-    justify-content: end !important;
-    left: 0 !important;
-    pointer-events: none !important;
-    right: 0 !important;
-    width: 100% !important;
-} */
 </style>

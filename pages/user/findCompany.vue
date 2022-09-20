@@ -50,7 +50,7 @@
                         <tr v-for="(company_list,id) in Company_list" :key="company_list.id" class="height">
                         <td>
                             <div class="w-25 ">
-                            <img src="../../assets/imges/company.jpeg" alt="">
+                            <!-- <img src="../../assets/imges/company.jpeg" alt=""> -->
                         </div>
                         </td>
                         <td>
@@ -64,9 +64,9 @@
                         <td>
                             <div class="card m-4 mb-4 border-0">
                                 <div class="d-flex">
+                                    <!-- <img src="../../assets/imges/star-full.svg" alt="" width="20">
                                     <img src="../../assets/imges/star-full.svg" alt="" width="20">
-                                    <img src="../../assets/imges/star-full.svg" alt="" width="20">
-                                    <img src="../../assets/imges/star-full.svg" alt="" width="20">
+                                    <img src="../../assets/imges/star-full.svg" alt="" width="20"> -->
 
                                 </div>
                                 <p>Company Description</p>
@@ -113,8 +113,35 @@ export default {
             ],
         }
     },
+
     async mounted() {
-        let auth = localStorage.getItem('user_access_token');
+    let auth = localStorage.getItem("user_access_token");
+    if (auth) {
+      console.log("user login")
+      this.onload();
+    }
+    else {
+      this.$router.push(`/user/login`);
+      console.log("usernot login")
+    }
+  },
+    methods: {
+        searchItem() {
+
+            let data = [];
+            this.search
+            this.Company_list.map((ele) => {
+                // console.log(ele.company_name,this.search,"check")
+                if (ele.company_name.toLowerCase() == this.search.toLowerCase()) {
+                    data.push(ele)
+                }
+                this.Company_list1 = data
+                console.log(this.Company_list1, "ele")
+            })
+        },
+     async   onload(){
+
+            let auth = localStorage.getItem('user_access_token');
         // let company_id = localStorage.getItem('user_company_id');
         const config = {
             headers: {
@@ -130,28 +157,6 @@ export default {
             .then((response) => {
                 this.Company_list = response.data.data
             });
-    },
-    methods: {
-
-        // onChange(event) {
-
-        // console.log(event.target.value)
-
-        // }
-
-        searchItem() {
-
-            let data = [];
-            this.search
-            this.Company_list.map((ele) => {
-                // console.log(ele.company_name,this.search,"check")
-                if (ele.company_name.toLowerCase() == this.search.toLowerCase()) {
-                    data.push(ele)
-                }
-                this.Company_list1 = data
-                console.log(this.Company_list1, "ele")
-            })
-
         }
     }
 };

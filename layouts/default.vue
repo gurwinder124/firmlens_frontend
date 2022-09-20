@@ -175,7 +175,7 @@ export default {
         }
       ],
       company: [
-      {
+       {
           // icon: 'mdi-domain',
           title: 'Company List',
           to: '/admin/companylist'

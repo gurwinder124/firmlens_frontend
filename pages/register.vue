@@ -1,9 +1,12 @@
 <template>
-  <div class="d-flex height">
+  <div class="">
+    <div class="row">
+      <div class="col-12 col-md-6 col-lg-4 ">
     <div class="firstdiv">
       <div class="main-div">
         <div class="d-flex justify-content-between align-items-center">
-          <h1 class="text-white">Firmlens</h1><span>
+          <NuxtLink to="/" class="text-decoration-none">
+          <h1 class="text-white">Firmlens</h1></NuxtLink><span>
             <v-icon class="text-white">mdi-home</v-icon>
           </span>
         </div>
@@ -14,10 +17,11 @@
           & will soon launch in 23 cities!!</p>
         <p class="text-white content-text">Click on below and share your details
           to be part of our exclusive network</p>
-        <v-btn rounded class="text-dark px-4 py-4   mr-4 fs-5">get connected</v-btn>
+        <!-- <v-btn rounded class="text-dark px-4 py-4   mr-4 fs-5">get connected</v-btn> -->
       </div>
     </div>
-
+  </div>
+  <div class="col-12 col-md-6 col-lg-8">
     <form class="form">
       <h2> Company Registration</h2>
       <p>Start your journey with us</p>
@@ -59,6 +63,22 @@
       <p class="mt-3">Already have an account <NuxtLink to="/login">Login</NuxtLink>
       </p>
     </form>
+
+  </div>
+  <template>
+        <div class="text-center ma-2 v-snack">
+          <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position"> 
+            {{ text }}
+
+            <template v-slot:action="{ attrs }">
+              <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                Close
+              </v-btn>
+            </template>
+          </v-snackbar>
+        </div>
+      </template>
+  </div>
   </div>
 
 </template>
@@ -93,6 +113,8 @@ export default {
     dominName: "",
     password: "",
     checkbox: false,
+    snackbar: false,
+    text: ``,
   }),
 
   computed: {
@@ -160,20 +182,28 @@ export default {
         }
       }
       this.$axios
-        .post("/v1/registerCompany", {
+        .post("/v1/register-company", {
           company_name: this.companyName,
           company_type: this.companyType,
           domain_name: this.dominName,
           password: this.password,
           designation: this.designation,
-          name: this.Name,
+          first_name: this.Name,
           email: this.email,
         }, config)
         .then((resp) => {
-          console.log(resp)
+          console.log(resp.data.code)
+          if(resp.data.code == 200)
+          {
+            this.snackbar = true;
+            this.text = "Company register SuccessFully Wait for Admin Approval";
+            // this.$router.push("/login")
+          }
+          else{
+            this.snackbar = true;
+            this.text = "Something Wrong Please Check"
+          }
         })
-
-
     },
     clear() {
       this.$v.$reset()
@@ -192,26 +222,26 @@ export default {
 
 
 .form {
-  width: 40%;
-  align-items: center;
-  margin: 6% auto;
+  margin: 44px auto;
+    width: 67%;
+    align-items: center;
 }
 
-.m-20 {
+/* .m-20 {
   margin-right: 15%;
-}
+} */
 
 .firstdiv {
   background-image: url(https://ueibi.com/images/logon_secreen.png);
-  width: 35%;
 }
 
 .main-div {
-  margin: 50px auto;
-  display: flex;
-  flex-direction: column;
-  padding: 49px;
-  text-align: left;
+  margin: 0px auto;
+    display: flex;
+    flex-direction: column;
+    padding: 68px 69px;
+    text-align: left;
+    height: 100vh;
 }
 
 .content-text {
