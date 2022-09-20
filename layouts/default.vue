@@ -50,7 +50,7 @@
         </v-list-item>
       </v-list> 
       </v-list-group>
-      <v-list-item
+      <!-- <v-list-item
           v-for="(item) in items"
           :key="3"
           :to="item.to"
@@ -64,7 +64,7 @@
           <v-list-item-content>
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
-        </v-list-item>
+        </v-list-item> -->
     </v-list>
     <!-- <v-list>
       <v-list-item
@@ -191,13 +191,13 @@ export default {
           to: '/admin/companyapprovedlist'
         },
       ],
-      items: [
-        {
-          icon: 'mdi-account-multiple',
-          title: 'User List',
-          to: '/admin/userlist'
-        },
-      ],
+        // items: [
+        //   {
+        //     icon: 'mdi-account-multiple',
+        //     title: 'User List',
+        //     to: '/admin/userlist'
+        //   },
+        // ],
       // profile: [
       //   {
       //     icon: 'mdi-account-multiple',

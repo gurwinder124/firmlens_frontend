@@ -157,7 +157,7 @@ export default {
     if (auth) {
       console.log("user login")
       this.$axios.get('admin/comapny-count-list', config).then((Response) => {
-        this.companyCount = Response
+        this.companyCount = Response.data.data
         console.log(this.companyCount, "mfdgjf")
       })
     }

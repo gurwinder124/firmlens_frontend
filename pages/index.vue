@@ -46,11 +46,12 @@
       <div class="container">
         <div class="row justify-content-center">
           <div class="d-flex align-items-center col-md-7 col-lg-6 col-12">
-            <div class="text-center text-md-left"><span
+            <div class="text-center text-md-left">
+              <!-- <span
                 class="bg-light v-chip v-chip--no-color theme--light v-size--large white--text"><span
                   class="v-chip__content ">
                   Creating Brands
-                </span></span>
+                </span></span> -->
               <h2 class=" banner1-title font-weight-boldtext-uppercase white--text">
                 ONE BILLON PEOPLE USE FACEBOOK
               </h2>
