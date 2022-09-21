@@ -9,8 +9,8 @@
     >
     <v-list>
       <v-list-item
-          v-for="(item) in dashboard"
-          :key="5"
+          v-for="(item,index) in dashboard"
+          :key="index"
           :to="item.to"
           router
           exact
@@ -34,8 +34,8 @@
 
         <v-list>
         <v-list-item
-          v-for="(item) in company"
-          :key="4"
+          v-for="(item,index) in company"
+          :key="index"
           :to="item.to"
           router
           exact

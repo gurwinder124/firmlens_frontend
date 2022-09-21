@@ -6,6 +6,45 @@
         <v-toolbar-title>Employee List</v-toolbar-title>
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
+        <v-dialog v-model="reviewDialog" max-width="600px">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+              Review
+            </v-btn>
+          </template>
+          <v-card>
+            <v-card-title>
+              <span class="text-h5">{{ formReview }}</span>
+            </v-card-title>
+            <v-card-text>
+              <v-container>
+                <v-row>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.first_name" label="First Name"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.last_name" label="Last Name"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field type="password" v-model="editedItem.password" label="Password"></v-text-field>
+                  </v-col>
+                  <v-col cols="12" sm="6" md="4">
+                    <v-text-field v-model="editedItem.designation" label="Designation"></v-text-field>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
         <v-dialog v-model="dialog" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
@@ -83,6 +122,10 @@
         Delete
         <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
       </v-btn>
+      <v-btn class="accpet" color="green lighten-2" dark @click="review(item)">
+        Review  
+        <v-icon dark right class="subtitle-2"> mdi-star </v-icon>
+      </v-btn>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary"> Reset </v-btn>
@@ -100,6 +143,7 @@ export default {
     data1: "",
     dialog: false,
     dialogDelete: false,
+    reviewDialog:false,
     snackbar: false,
     text: ``,
     headers: [
@@ -134,14 +178,14 @@ export default {
     },
   }),
 
-  async mounted() {
+  mounted() {
     let auth = localStorage.getItem("user_access_token");
     if (auth) {
       console.log("user login")
       this.onload();
     }
     else {
-      this.$router.push(`/user/login`);
+      this.$router.push(`/login`);
       console.log("usernot login")
     }
   },
@@ -150,6 +194,9 @@ export default {
   computed: {
     formTitle() {
       return this.editedIndex === -1 ? "NEW EMPLOYEE" : "Edit EMPLOYEE";
+    },
+    formReview() {
+      return this.editedIndex === -1 ? "NEW Review" : "Edit Review";
     },
   },
 
@@ -162,6 +209,13 @@ export default {
     },
   },
   methods: {
+      // review 
+      review(){
+        reviewDialog =true;
+
+      },
+
+
 
     // Get Single Sub-user-list
     async onload() {
@@ -203,7 +257,7 @@ export default {
           config
         )
         .then((response) => {
-          console.log(response.data.status, " create user");
+          console.log(response.data.status, "create user");
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = "User Create SuccessFully"

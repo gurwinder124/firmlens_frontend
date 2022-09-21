@@ -121,7 +121,7 @@ export default {
       this.onload();
     }
     else {
-      this.$router.push(`/user/login`);
+      this.$router.push(`/login`);
       console.log("usernot login")
     }
   },

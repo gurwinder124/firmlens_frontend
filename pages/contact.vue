@@ -125,10 +125,6 @@ export default {
             console.log(this.textarea, "first name")
 
         },
-        reserve() {
-            this.loading = true
-            setTimeout(() => (this.loading = false), 2000)
-        },
     },
 }
 </script>

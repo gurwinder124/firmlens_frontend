@@ -63,7 +63,7 @@
               <div class="mt-16 pt-2">
                 <!-- class="btn-custom-md v-btn v-btn--has-bg v-btn--rounded 
                   v-btn--router theme--light elevation-0 v-size--large white">-->
-                <v-btn class="ma-2"  :disabled="loading" color="white" @click="loader = 'loading'"
+                <v-btn class="ma-2"   color="white"
                   rounded> Do you Need Help ?
                 </v-btn>
               </div>

@@ -4,47 +4,60 @@
     <div class="row">
       <div class="col-12 col-md-6 col-lg-4 ">
         <!-- <div class="d-flex height "> -->
-          <div class="firstdiv">
-            <div class="main-div">
-              <div class="d-flex justify-content-between align-items-center">
-                <NuxtLink to="/" class="text-decoration-none">
-                  <h1 class="text-white">Firmlens</h1>
-                </NuxtLink><span>
-                  <v-icon class="text-white">mdi-home</v-icon>
-                </span>
-              </div>
-              <p class="text-white content-text">We are LIVE in
-
-                Chandigarh CCR & Gurgaon
-
-                & will soon launch in 23 cities!!</p>
-              <p class="text-white content-text">Click on below and share your details
-                to be part of our exclusive network</p>
-              <NuxtLink to="/register" class="text-decoration-none">
-                <v-btn rounded class="text-dark px-4 py-4 mr-4 fs-5">Register</v-btn>
-              </NuxtLink>
+        <div class="firstdiv">
+          <div class="main-div">
+            <div class="d-flex justify-content-between align-items-center">
+              <NuxtLink to="/" class="text-decoration-none">
+                <h1 class="text-white">Firmlens</h1>
+              </NuxtLink><span>
+                <v-icon class="text-white">mdi-home</v-icon>
+              </span>
             </div>
+            <p class="text-white content-text">We are LIVE in
+
+              Chandigarh CCR & Gurgaon
+
+              & will soon launch in 23 cities!!</p>
+            <p class="text-white content-text">Click on below and share your details
+              to be part of our exclusive network</p>
+            <NuxtLink to="/register" class="text-decoration-none">
+              <v-btn rounded class="text-dark px-4 py-4 mr-4 fs-5">Register</v-btn>
+            </NuxtLink>
           </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-8">
-
-          <form class="form">
-            <h2>User Login</h2>
-
-            <v-text-field as="email" v-model="email" :error-messages="emailErrors" label="E-mail" required
-              @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-
-            <v-text-field v-model="password" type="password" :error-messages="passwordErrors" :counter="8 "
-              label="password" required @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
-
-
-            <v-btn class="mr-4 " @click="submit">
-              Login
-            </v-btn>
-            <NuxtLink to="" class="text-decoration-underline ">Forgot Password?</NuxtLink>
-          </form>
-        </div>
       </div>
+      <div class="col-12 col-md-6 col-lg-8">
+
+        <form class="form">
+          <h2>User Login</h2>
+
+          <v-text-field as="email" v-model="email" :error-messages="emailErrors" label="E-mail" required
+            @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
+
+          <v-text-field v-model="password" type="password" :error-messages="passwordErrors" :counter="8 "
+            label="password" required @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
+
+
+          <v-btn class="mr-4 bg-primary" depressed @click="submit">
+            Login
+          </v-btn>
+          <NuxtLink to="" class="text-decoration-underline ">Forgot Password?</NuxtLink>
+        </form>
+        <template>
+          <div class="text-center ma-2 v-snack">
+            <v-snackbar v-model="snackbar" rounded="pill" outlined right top
+              class=" v-snackbar-toast position">
+              {{ text }}
+              <template v-slot:action="{ attrs }">
+                <v-btn class="v-snack-btn" text v-bind="attrs" @click="snackbar = false">
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
+          </div>
+        </template>
+      </div>
+    </div>
   </div>
 </template>
       
@@ -60,10 +73,10 @@ export default {
     password: { required }
   },
   data: () => ({
-
     email: '',
     password: "",
-
+    snackbar: false,
+    text: ``,
   }),
   computed: {
     emailErrors() {
@@ -96,7 +109,24 @@ export default {
           email: this.email,
         }, config)
         .then((resp) => {
-          console.log(resp)
+          console.log(resp.data.msg)
+          if (resp.data.success == true) {
+            this.snackbar = true;
+            this.text = "User Login Success"
+            localStorage.setItem('user_access_token', resp?.data?.data?.token)
+            console.log(resp.data.data.user.id, 'user_company_id')
+            localStorage.setItem('user_company_id', resp?.data?.data?.user?.company_id)
+            // this.$router.push(`/user`);
+          }
+          else if(resp.data.status == 'error')
+          {
+            this.snackbar = true;
+            this.text = `${resp.data.msg}`
+          }
+        }).catch((err) => {
+          // console.log(err)
+          this.snackbar = true;
+          this.text = `${err.response.data.data.error}`
         })
     },
     clear() {
@@ -106,6 +136,17 @@ export default {
 
     },
   },
+  mounted() {
+    console.log("page load")
+    let auth = localStorage.getItem("user_access_token");
+    if (auth) {
+      console.log("user login")
+      this.$router.push(`/user`);
+    }
+    else {
+      console.log("user not  login")
+    }
+  }
 
 };
 </script>
@@ -114,22 +155,20 @@ export default {
   background-image: url(https://ueibi.com/images/logon_secreen.png);
 }
 
-
-
-
 .main-div {
   margin: 0px auto;
-    display: flex;
-    flex-direction: column;
-    padding: 68px 69px;
-    text-align: left;
-    height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 68px 69px;
+  text-align: left;
+  height: 100vh;
 }
 
 .form {
   width: 75%;
-    align-items: center;
-    margin: 20% auto;;
+  align-items: center;
+  margin: 20% auto;
+  ;
 }
 
 .m-20 {
@@ -143,6 +182,6 @@ export default {
 
 .height {
   height: 100vh;
-}
+}                                       
 </style>
         

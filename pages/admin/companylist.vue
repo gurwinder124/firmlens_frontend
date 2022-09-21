@@ -62,7 +62,6 @@
         <div class="text-center ma-2 v-snack">
           <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position"> 
             {{ text }}
-
             <template v-slot:action="{ attrs }">
               <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
                 Close
@@ -111,7 +110,8 @@ export default {
     data1: "",
     dialog: false,
     dialogDelete: false,
- 
+    snackbar: false,
+    text: ``,
     headers: [
       {
         text: "S.no.",
@@ -212,7 +212,7 @@ export default {
         }).catch((err)=>{
           console.log("Something Wrong")
           this.snackbar = true;
-            this.text = "Company Accpet SuccessFully"
+          this.text = "Company Accpet SuccessFully"
         });
     },
 

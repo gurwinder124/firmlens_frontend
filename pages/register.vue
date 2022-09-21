@@ -54,10 +54,10 @@
       <v-checkbox v-model="checkbox" filled :error-messages="checkboxErrors" label="Do you agree?" required
         @change="$v.checkbox.$touch()"></v-checkbox>
 
-      <v-btn class="mr-4" @click="submit">
+      <v-btn class="mr-4 bg-primary" @click="submit">
         submit
       </v-btn>
-      <v-btn @click="clear">
+      <v-btn @click="clear" class="bg-danger">
         clear
       </v-btn>
       <p class="mt-3">Already have an account <NuxtLink to="/login">Login</NuxtLink>

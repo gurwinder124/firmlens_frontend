@@ -109,13 +109,13 @@
       methods: {
      
     },
-    async mounted() {
+    beforeMount() {
     let auth = localStorage.getItem("user_access_token");
     if (auth) {
       console.log("user login")
     }
     else {
-      this.$router.push(`/user/login`);
+      this.$router.push(`/login`);
       console.log("usernot login")
     }
   },

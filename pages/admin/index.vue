@@ -97,7 +97,6 @@ export default {
   layout: 'default',
   name: "IndexPage",
   data: () => ({
-    loading: false,
     selection: 1,
     companyCount: [],
         desserts: [
