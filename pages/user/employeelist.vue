@@ -125,7 +125,7 @@
 <script>
 export default {
   layout: "userdefault",
-  middleware:'userauth',
+  // middleware:'userauth',
   data: () => ({
     data1: "",
     userid: '',
@@ -380,6 +380,16 @@ export default {
         this.editedIndex = -1;
       });
     },
+  },
+  beforeMount() {
+    let auth = localStorage.getItem("user_access_token");
+    if (auth) {
+      console.log("user login")
+    }
+    else {
+      this.$router.push(`/login`);
+      console.log("usernot login")
+    }
   },
 };
 </script>

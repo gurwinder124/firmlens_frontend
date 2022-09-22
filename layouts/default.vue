@@ -157,9 +157,9 @@
 </template>
 
 <script>
-import Vue from 'vue'
-import axios from 'axios'
-Vue.use(axios)
+// import Vue from 'vue'
+// import axios from 'axios'
+// Vue.use(axios)
 export default {
   name: 'DefaultLayout',
   data () {
@@ -214,7 +214,7 @@ export default {
   },
   methods:
 {
-   logout() {
+  async logout() {
       let auth = localStorage.getItem("access_token")
       const config = {
         headers: {
@@ -222,17 +222,19 @@ export default {
           Authorization: `Bearer ${auth}`,
         },
       };
-       this.$axios
+     const response= await this.$axios
         .post("/admin/admin-logout",{},config)
-        .then((response) => {
-          if(response.status == 200)
+        
+        if(response.status == 200)
           {
             this.$router.push(`/admin/login`);
             localStorage.removeItem('access_token');
           }
-        }).catch((err)=>{
-          console.log(err,"error massge")
-        });
+        // .then((response) => {
+        
+        // }).catch((err)=>{
+        //   console.log(err,"error massge")
+        // });
     },
   }
 }

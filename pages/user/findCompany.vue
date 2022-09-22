@@ -93,7 +93,7 @@
 
 export default {
     layout: "userdefault",
-  middleware:'userauth',
+//   middleware:'userauth',
     data() {
         return {
             Company_list: [],
@@ -121,8 +121,16 @@ export default {
         }
     },
 
-    async mounted() {
+        async mounted() {
+    let auth = localStorage.getItem("user_access_token");
+    if (auth) {
+      console.log("user login")
       this.onload();
+    }
+    else {
+      this.$router.push(`/login`);
+      console.log("usernot login")
+    }
   },
     methods: {
         searchItem() {

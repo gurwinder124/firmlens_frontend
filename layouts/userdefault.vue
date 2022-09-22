@@ -157,7 +157,7 @@ import { title } from 'process'
     },
     methods:
 {
-   logout() {
+ async  logout() {
       let auth = localStorage.getItem("user_access_token")
       const config = {
         headers: {
@@ -165,18 +165,23 @@ import { title } from 'process'
           Authorization: `Bearer ${auth}`,
         },
       };
-       this.$axios
+    const response = await  this.$axios
         .post("/v1/user-logout",{},config)
-        .then((response) => {
-          console.log(response)
-          if(response.status == 200)
+        if(response.status == 200)
           {
             this.$router.push(`/login`);
             localStorage.removeItem('user_access_token');
           }
-        }).catch((err)=>{
-          console.log(err,"error massge")
-        });
+        // .then((response) => {
+        //   console.log(response)
+        //   if(response.status == 200)
+        //   {
+        //     this.$router.push(`/login`);
+        //     localStorage.removeItem('user_access_token');
+        //   }
+        // }).catch((err)=>{
+        //   console.log(err,"error massge")
+        // });
     },
   }
   }
