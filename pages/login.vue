@@ -152,9 +152,8 @@ export default {
 </script>
 <style scoped>
 .firstdiv {
-  background-image: url(https://ueibi.com/images/logon_secreen.png);
+  background-image: url("../assets/imges/background.png");
 }
-
 .main-div {
   margin: 0px auto;
   display: flex;

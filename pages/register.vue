@@ -197,7 +197,7 @@ export default {
           {
             this.snackbar = true;
             this.text = "Company register SuccessFully Wait for Admin Approval";
-            // this.$router.push("/login")
+            this.$router.push("/login")
           }
           else{
             this.snackbar = true;
@@ -232,7 +232,7 @@ export default {
 }
 
 .firstdiv {
-  background-image: url(https://ueibi.com/images/logon_secreen.png);
+  background-image: url("../assets/imges/background.png");
 }
 
 .main-div {

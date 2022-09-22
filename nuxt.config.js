@@ -69,7 +69,7 @@ export default {
     }
   },
   router: {
-    base: '/firmlens/'
+    base: '/firmlens/',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

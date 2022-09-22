@@ -170,7 +170,7 @@ export default {
 }
 
 .Thbody {
-  background-image: url(https://ueibi.com/images/logon_secreen.png);
+  background-image: url("../assets/imges/background.png");
   /* background-color: #607DF9; */
   background-size: cover;
   height: 100vh;

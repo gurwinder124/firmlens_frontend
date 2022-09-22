@@ -48,11 +48,17 @@
                     </thead>
                     <tbody >
                         <tr v-for="(company_list,id) in Company_list" :key="company_list.id" class="height">
-                        <td>
+                        <!-- <td v-if="company_lis.image == ''">
                             <div class="w-25 ">
-                            <!-- <img src="../../assets/imges/company.jpeg" alt=""> -->
+                            <img src="../../assets/imges/companylogo.png" alt="">
+                        </div>
+                        </td> -->
+                        <td >
+                            <div class="w-15 ">
+                            <img src="../../assets/imges/companylogo.png" class="w-50" alt="">
                         </div>
                         </td>
+                        
                         <td>
                             <div class="card mb-4 border-0 width">
                                 <h5 class="border-0">{{company_list.company_name}}</h5>
@@ -87,6 +93,7 @@
 
 export default {
     layout: "userdefault",
+  middleware:'userauth',
     data() {
         return {
             Company_list: [],
@@ -115,15 +122,7 @@ export default {
     },
 
     async mounted() {
-    let auth = localStorage.getItem("user_access_token");
-    if (auth) {
-      console.log("user login")
       this.onload();
-    }
-    else {
-      this.$router.push(`/login`);
-      console.log("usernot login")
-    }
   },
     methods: {
         searchItem() {
@@ -142,7 +141,7 @@ export default {
      async   onload(){
 
             let auth = localStorage.getItem('user_access_token');
-        // let company_id = localStorage.getItem('user_company_id');
+        let company_id = localStorage.getItem('user_company_id');
         const config = {
             headers: {
                 'Content-type': 'application/json',

@@ -123,6 +123,11 @@ import { title } from 'process'
             icon:'mdi-account-multiple',
             title:'Find Company',
             to:'/user/findCompany'
+          },
+          {
+            icon:'mdi-account-multiple',
+            title:'test',
+            to:'/user/test'
           }
         ],
       
@@ -136,6 +141,11 @@ import { title } from 'process'
             icon:'mdi-account-multiple',
             title:'Find Company',
             to:'/user/findCompany'
+          },
+          {
+            icon:'mdi-account-multiple',
+            title:'test',
+            to:'/user/test'
           }
         ],
       

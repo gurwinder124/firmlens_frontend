@@ -125,6 +125,7 @@
 <script>
 export default {
   layout: "userdefault",
+  middleware:'userauth',
   data: () => ({
     data1: "",
     userid: '',
@@ -171,15 +172,7 @@ export default {
   }),
 
   mounted() {
-    let auth = localStorage.getItem("user_access_token");
-    if (auth) {
-      console.log("user login")
       this.onload();
-    }
-    else {
-      this.$router.push(`/login`);
-      console.log("usernot login")
-    }
   },
 
 
