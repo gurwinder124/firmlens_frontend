@@ -60,7 +60,7 @@
       </v-toolbar>
       <template>
         <div class="text-center ma-2 v-snack">
-          <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position"> 
+          <v-snackbar v-model="snackbar" right top  color="blue darken-1"  class="v-snackbar-toast position"> 
             {{ text }}
             <template v-slot:action="{ attrs }">
               <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">

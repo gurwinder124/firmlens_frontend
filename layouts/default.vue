@@ -222,12 +222,14 @@ export default {
           Authorization: `Bearer ${auth}`,
         },
       };
-      console.log(config)
        this.$axios
         .post("/admin/admin-logout",{},config)
         .then((response) => {
-          console.log(response, "12323435456785654");   
-          localStorage.clear();   
+          if(response.status == 200)
+          {
+            this.$router.push(`/admin/login`);
+            localStorage.removeItem('access_token');
+          }
         }).catch((err)=>{
           console.log(err,"error massge")
         });

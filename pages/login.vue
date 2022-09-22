@@ -38,7 +38,7 @@
             label="password" required @input="$v.password.$touch()" @blur="$v.password.$touch()"></v-text-field>
 
 
-          <v-btn class="mr-4 bg-primary" depressed @click="submit">
+          <v-btn   class="mr-4 bg-primary" depressed @click="submit">
             Login
           </v-btn>
           <NuxtLink to="" class="text-decoration-underline ">Forgot Password?</NuxtLink>
@@ -116,7 +116,7 @@ export default {
             localStorage.setItem('user_access_token', resp?.data?.data?.token)
             console.log(resp.data.data.user.id, 'user_company_id')
             localStorage.setItem('user_company_id', resp?.data?.data?.user?.company_id)
-            // this.$router.push(`/user`);
+            this.$router.push(`/user`);
           }
           else if(resp.data.status == 'error')
           {

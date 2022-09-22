@@ -182,12 +182,13 @@ export default {
         },
       };
       await this.$axios
-        .post("/admin/company-list", { status: this.status }, config)
+        .post("/admin/company-list", { status: 1 }, config)
         .then((response) => {
           console.log(response, "12323435456785654");
           this.desserts = response?.data?.data?.company_list;
         });
     },
+    
     async accpet(item) {
       console.log(item.id, "item data ");
       let auth = localStorage.getItem("access_token");

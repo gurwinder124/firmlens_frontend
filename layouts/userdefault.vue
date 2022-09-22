@@ -51,6 +51,10 @@
         </v-btn>
         <v-toolbar-title v-text="title" />
         <v-spacer />
+        <v-btn class="" 
+      v-on:click="logout">
+        Logout
+      </v-btn>
         <v-btn
           icon
           @click.stop="rightDrawer = !rightDrawer"
@@ -140,7 +144,31 @@ import { title } from 'process'
         rightDrawer: false,
         title: 'Firmlens'
       }
-    }
+    },
+    methods:
+{
+   logout() {
+      let auth = localStorage.getItem("user_access_token")
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+       this.$axios
+        .post("/v1/user-logout",{},config)
+        .then((response) => {
+          console.log(response)
+          if(response.status == 200)
+          {
+            this.$router.push(`/login`);
+            localStorage.removeItem('user_access_token');
+          }
+        }).catch((err)=>{
+          console.log(err,"error massge")
+        });
+    },
+  }
   }
   </script>
   

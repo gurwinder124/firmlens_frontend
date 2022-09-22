@@ -7,11 +7,7 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="reviewDialog" max-width="600px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-              Review
-            </v-btn>
-          </template>
+
           <v-card>
             <v-card-title>
               <span class="text-h5">{{ formReview }}</span>
@@ -20,19 +16,11 @@
               <v-container>
                 <v-row>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.first_name" label="First Name"></v-text-field>
+                    <v-select :items="items" v-model="addReview.rating" label="Rating"></v-select>
+                    <!-- <v-text-field v-model="addReview.rating" label="Rating"></v-text-field> -->
                   </v-col>
                   <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.last_name" label="Last Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field type="password" v-model="editedItem.password" label="Password"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.designation" label="Designation"></v-text-field>
+                    <v-text-field v-model="addReview.description" label="Description"></v-text-field>
                   </v-col>
                 </v-row>
               </v-container>
@@ -40,14 +28,14 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" text @click="reviewclose"> Cancel </v-btn>
+              <v-btn color="blue darken-1" text @click="reviewsave"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
         <v-dialog v-model="dialog" max-width="600px">
           <template v-slot:activator="{ on, attrs }">
-            <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
+            <v-btn color="blue darken-1" dark class="mb-2" v-bind="attrs" v-on="on">
               Add New Employee
             </v-btn>
           </template>
@@ -81,8 +69,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+              <v-btn  color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
+              <v-btn  color="green lighten-2"  class="text-white" @click="save"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -91,8 +79,8 @@
             <v-card-title class="text-h5">Are you sure you want to Remove Employee</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn class="btn btn-success"  text @click="closeDelete">Cancel</v-btn>
-              <v-btn class="btn btn-danger"  text @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" class="text-white"  @click="closeDelete">Cancel</v-btn>
+              <v-btn color="green lighten-2"  class="text-white"  @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -114,7 +102,7 @@
     </template>
 
     <template v-slot:item.actions="{item}">
-      <v-btn class="accpet" color="primary" dark @click="accpet(item)">
+      <v-btn class="accpet" color="blue darken-1" dark @click="accpet(item)">
         Edit
         <v-icon class="subtitle-2" dark right> mdi-pencil </v-icon>
       </v-btn>
@@ -123,7 +111,7 @@
         <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
       </v-btn>
       <v-btn class="accpet" color="green lighten-2" dark @click="review(item)">
-        Review  
+        Review
         <v-icon dark right class="subtitle-2"> mdi-star </v-icon>
       </v-btn>
     </template>
@@ -135,15 +123,14 @@
   </template>
   
 <script>
-import axios from "axios";
-
 export default {
   layout: "userdefault",
   data: () => ({
     data1: "",
+    userid: '',
     dialog: false,
     dialogDelete: false,
-    reviewDialog:false,
+    reviewDialog: false,
     snackbar: false,
     text: ``,
     headers: [
@@ -176,6 +163,11 @@ export default {
       carbs: 0,
       protein: 0,
     },
+    addReview: {
+      rating: '',
+      description: ''
+    },
+    items: ['1', '2', '3', '4', '5'],
   }),
 
   mounted() {
@@ -196,7 +188,7 @@ export default {
       return this.editedIndex === -1 ? "NEW EMPLOYEE" : "Edit EMPLOYEE";
     },
     formReview() {
-      return this.editedIndex === -1 ? "NEW Review" : "Edit Review";
+      return this.editedIndex === -1 ? "New Review" : "Edit Review";
     },
   },
 
@@ -207,14 +199,53 @@ export default {
     dialogDelete(val) {
       val || this.closeDelete();
     },
+    reviewDialog(val) {
+      val || this.reviewclose();
+
+    }
+
   },
   methods: {
-      // review 
-      review(){
-        reviewDialog =true;
+    // review 
+    review(item) {
+      this.reviewDialog = true;
+      this.userid = item.id;
+      console.log(item.id, "item data")
+    },
+    async reviewsave() {
+      console.log(this.addReview, "Add reviws")
+      let auth = localStorage.getItem("user_access_token");
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+      this.$axios.post('/v1/add-review', {
 
-      },
+        user_id: this.userid,
+        rating: this.addReview.rating,
+        description: this.addReview.description
+      }, config).then((response) => {
+        console.log(response.data, "response")
+        if (response.data.code == 200) {
+          this.snackbar = true;
+          this.text = `Add Review Success`;
+          this.reviewDialog = false;
+        }
+        else {
+          this.snackbar = true;
+          this.text = `Something Wrong Please Check`;
+        }
+      }).catch((err) => {
+        console.log(err.data.error, 'error')
+      })
 
+
+    },
+    reviewclose() {
+      this.reviewDialog = false;
+    },
 
 
     // Get Single Sub-user-list
