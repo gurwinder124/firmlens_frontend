@@ -1,246 +1,140 @@
 <template>
-  <v-app >
-    <v-navigation-drawer
-      v-model="drawer"
-      :mini-variant="miniVariant"
-      :clipped="clipped"
-      fixed
-      app
-    >
-    <v-list>
-      <v-list-item
-          v-for="(item,index) in dashboard"
-          :key="index"
-          :to="item.to"
-          router
-          exact
-          class="text-decoration-none"
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-
-      <v-list-group
-        :value="false"
-        prepend-icon="mdi-account-circle"
+    <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
+      <notifications></notifications>
+      <side-bar
+        :background-color="sidebarBackground"
+        :short-title="$t('sidebar.shortTitle')"
+        :title="$t('sidebar.title')"
       >
-        <template v-slot:activator>
-          <v-list-item-title>Company List</v-list-item-title>
-        </template>
-
-        <v-list>
-        <v-list-item
-          v-for="(item,index) in company"
-          :key="index"
-          :to="item.to"
-          router
-          exact
-          class="text-decoration-none"
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list> 
-      </v-list-group>
-      <!-- <v-list-item
-          v-for="(item) in items"
-          :key="3"
-          :to="item.to"
-          router
-          exact
-          class="text-decoration-none"
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item> -->
-    </v-list>
-    <!-- <v-list>
-      <v-list-item
-          v-for="(item) in profile "
-          :key="2"
-          :to="item.to"
-          router
-          exact
-          class="text-decoration-none"
-        >
-          <v-list-item-action>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-    </v-list> -->
-
-    </v-navigation-drawer>
-    <v-app-bar
-      :clipped-left="clipped"
-      fixed
-      app
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-btn
-        icon
-        @click.stop="miniVariant = !miniVariant"
-      >
-        <v-icon>mdi-{{ `chevron-${miniVariant ? 'right' : 'left'}` }}</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="clipped = !clipped"
-      >
-         <v-icon>mdi-application</v-icon>
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="fixed = !fixed"
-      >
-        <v-icon>mdi-minus</v-icon>
-      </v-btn>
-      <v-toolbar-title v-text="title" />
-      <v-spacer />
-      <v-btn class="" 
-      v-on:click="logout">
-        Logout
-      </v-btn>
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
-    </v-app-bar>
-    <v-main>
-      <v-container>
-        <Nuxt />
-      </v-container>
-    </v-main>
-    <v-navigation-drawer
-      v-model="rightDrawer"
-      :right="right"
-      temporary
-      fixed
-    >
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-     
-    </v-navigation-drawer>
-    <v-footer
-      :absolute="!fixed"
-      app
-    >
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+        <template slot-scope="props" slot="links">
+          <sidebar-item
+            :link="{
+              name: $t('sidebar.dashboard'),
+              icon: 'tim-icons icon-chart-pie-36',
+              path: '/das'
+            }"
+          >
+          </sidebar-item>
   
-  </v-app>
-   
-</template>
-
-<script>
-// import Vue from 'vue'
-// import axios from 'axios'
-// Vue.use(axios)
-export default {
-  name: 'DefaultLayout',
-  data () {
-    return {
-      clipped: false,
-      drawer: false,
-      fixed: false,
-      dashboard:[
-        {
-          icon:'mdi-home',
-          title: 'Dashboard',
-          to:'/admin'
-        }
-      ],
-      company: [
-       {
-          // icon: 'mdi-domain',
-          title: 'Company List',
-          to: '/admin/companylist'
-        },
-        {
-          // icon: 'mdi-domain',
-          title: 'Company Pending',
-          to: '/admin/companypendinglist'
-        },
-        {
-          // icon: 'mdi-account-multiple',
-          title: 'Company Approved',
-          to: '/admin/companyapprovedlist'
-        },
-      ],
-        // items: [
-        //   {
-        //     icon: 'mdi-account-multiple',
-        //     title: 'User List',
-        //     to: '/admin/userlist'
-        //   },
-        // ],
-      // profile: [
-      //   {
-      //     icon: 'mdi-account-multiple',
-      //     title: 'profile',
-      //     to: '/admin/profile'
-      //   },
-      // ],
-    
-      miniVariant: false,
-      right: true,
-      rightDrawer: false,
-      title: 'Firmlens'
+        </template>
+      </side-bar>
+      <!--Share plugin (for demo purposes). You can remove it if don't plan on using it-->
+      <sidebar-share :background-color.sync="sidebarBackground"></sidebar-share>
+      <div class="main-panel" :data="sidebarBackground">
+        <dashboard-navbar></dashboard-navbar>
+        <router-view name="header"></router-view>
+  
+        <div
+          :class="{ content: !isFullScreenRoute }"
+          @click="toggleSidebar"
+        >
+          <zoom-center-transition :duration="200" mode="out-in">
+            <!-- your content here -->
+            <nuxt></nuxt>
+          </zoom-center-transition>
+        </div>
+        <content-footer v-if="!isFullScreenRoute"></content-footer>
+      </div>
+    </div>
+  </template>
+  <script>
+    /* eslint-disable no-new */
+    import PerfectScrollbar from 'perfect-scrollbar';
+    import 'perfect-scrollbar/css/perfect-scrollbar.css';
+    import SidebarShare from '../components/Layout/SidebarSharePlugin';
+    function hasElement(className) {
+      return document.getElementsByClassName(className).length > 0;
     }
-  },
-  methods:
-{
-  async logout() {
-      let auth = localStorage.getItem("access_token")
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-     const response= await this.$axios
-        .post("/admin/admin-logout",{},config)
-        
-        if(response.status == 200)
-          {
-            this.$router.push(`/admin/login`);
-            localStorage.removeItem('access_token');
+  
+    function initScrollbar(className) {
+      if (hasElement(className)) {
+        new PerfectScrollbar(`.${className}`);
+      } else {
+        // try to init it later in case this component is loaded async
+        setTimeout(() => {
+          initScrollbar(className);
+        }, 100);
+      }
+    }
+  
+    import DashboardNavbar from '../components/Layout/DashboardNavbar.vue';
+    import ContentFooter from '../components/Layout/ContentFooter.vue';
+    import DashboardContent from '../components/Layout/Content.vue';
+    // import { SlideYDownTransition, ZoomCenterTransition } from 'vue2-transitions';
+  
+    export default {
+      components: {
+        DashboardNavbar,
+        ContentFooter,
+        DashboardContent,
+        // SlideYDownTransition,
+        // ZoomCenterTransition,
+        SidebarShare
+      },
+      data() {
+        return {
+          sidebarBackground: 'vue' //vue|blue|orange|green|red|primary
+        };
+      },
+      computed: {
+        isFullScreenRoute() {
+          return this.$route.path === '/maps/full-screen'
+        }
+      },
+      methods: {
+        toggleSidebar() {
+          if (this.$sidebar.showSidebar) {
+            this.$sidebar.displaySidebar(false);
           }
-        // .then((response) => {
-        
-        // }).catch((err)=>{
-        //   console.log(err,"error massge")
-        // });
-    },
-  }
-}
-</script>
-<style>
-  .v-btn--is-elevated {
-    box-shadow:none
-  }
-</style>
+        },
+        initScrollbar() {
+          let docClasses = document.body.classList;
+          let isWindows = navigator.platform.startsWith('Win');
+          if (isWindows) {
+            // if we are on windows OS we activate the perfectScrollbar function
+            initScrollbar('sidebar');
+            initScrollbar('main-panel');
+            initScrollbar('sidebar-wrapper');
+  
+            docClasses.add('perfect-scrollbar-on');
+          } else {
+            docClasses.add('perfect-scrollbar-off');
+          }
+        }
+      },
+      mounted() {
+        this.initScrollbar();
+      }
+    };
+  </script>
+  <style lang="scss">
+    $scaleSize: 0.95;
+    @keyframes zoomIn95 {
+      from {
+        opacity: 0;
+        transform: scale3d($scaleSize, $scaleSize, $scaleSize);
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  
+    .main-panel .zoomIn {
+      animation-name: zoomIn95;
+    }
+  
+    @keyframes zoomOut95 {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+        transform: scale3d($scaleSize, $scaleSize, $scaleSize);
+      }
+    }
+  
+    .main-panel .zoomOut {
+      animation-name: zoomOut95;
+    }
+  </style>
+  
