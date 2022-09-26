@@ -71,6 +71,9 @@
         </div>
       </template>
     </template>
+    <template v-slot:item.company_name="{ item }">
+      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none text-dark">{{item.company_name}}</nuxt-link>
+    </template>
     <template v-slot:item.request_status="{ item }">
       <v-btn class="status" color="warning" dark v-if="item.request_status == 1">
         Pending
@@ -83,6 +86,13 @@
       </v-btn>
     </template>
     <template v-slot:item.actions="{ item }">
+      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none" > <v-btn class="accpet" color="green darken-1" dark>
+        Preview
+        <v-icon class="subtitle-2" dark right>
+          mdi-eye
+        </v-icon>
+      </v-btn>
+    </nuxt-link>
       <v-btn class="accpet" color="primary" dark v-if="item.request_status == 1" @click="accpet(item)">
         Accept
         <v-icon class="subtitle-2" dark right>
@@ -102,7 +112,6 @@
 </template>
 
 <script>
-import axios from "axios";
 
 export default {
   layout: "admin",
@@ -182,9 +191,7 @@ export default {
       await this.$axios
         .post("/admin/company-list", { status: this.status }, config)
         .then((response) => {
-          // console.log(response, "12323435456785654");
           this.desserts = response?.data?.data.company_list;
-          // console.log(this.desserts, "12323435456785654");
         });
     },
     async accpet(item) {
@@ -222,7 +229,7 @@ export default {
       this.data1 = item.id
     },
 
-    deleteItemConfirm() {
+   async deleteItemConfirm() {
       console.log(this.data1)
       let auth = localStorage.getItem("access_token");
       const config = {
@@ -231,7 +238,7 @@ export default {
           Authorization: `Bearer ${auth}`,
         },
       };
-      this.$axios
+     await this.$axios
         .post("/admin/update-company-status", {
           status: "3",
           id: this.data1,
@@ -256,18 +263,10 @@ export default {
 
     close() {
       this.dialog = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
 
     closeDelete() {
       this.dialogDelete = false;
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      });
     },
 
     save() {
@@ -279,8 +278,8 @@ export default {
       this.close();
     },
   },
-  mounted(){
-this.onload();
+    mounted(){
+    this.onload();
   },
 };
 </script>
@@ -298,6 +297,10 @@ this.onload();
   padding: 0px !important;
   cursor: default;
   height: 16px !important;
+}
+.c-pointer
+{
+  cursor: pointer;
 }
 
 </style>

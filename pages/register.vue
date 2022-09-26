@@ -63,7 +63,6 @@
       <p class="mt-3">Already have an account <NuxtLink to="/login">Login</NuxtLink>
       </p>
     </form>
-
   </div>
   <template>
         <div class="text-center ma-2 v-snack">

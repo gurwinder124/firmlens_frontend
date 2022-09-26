@@ -52,6 +52,10 @@
         <v-toolbar-title v-text="title" />
         <v-spacer />
         <v-btn class="" 
+      v-on:click="userprofile">
+        Profile
+      </v-btn>
+        <v-btn class="" 
       v-on:click="logout">
         Logout
       </v-btn>
@@ -105,7 +109,7 @@ import { title } from 'process'
     name: 'userdefault',
     data () {
       return {
-        clipped: false,
+        clipped: true,
         drawer: false,
         fixed: false,
         dashboard:[
@@ -183,7 +187,24 @@ import { title } from 'process'
         //   console.log(err,"error massge")
         // });
     },
+    userprofile()
+    {
+      console.log('user profile')
+            this.$router.push(`/user/userprofile`);
+
+    }
   }
   }
   </script>
+  <style scoped>
+     .v-navigation-drawer{
+    /* box-shadow: 6px 9px 15px -4px rgba(0,0,0,0.65); */
+    border-right: 1px solid #ada9a9;
+    border-bottom: 1px solid #ada9a9;
+    }
+    .theme--light.v-list-item--active::before {
+    opacity: 0.30;
+    border-radius: 20px;
+}
+  </style>
   

@@ -110,7 +110,12 @@
         <v-icon>mdi-minus</v-icon>
       </v-btn>
       <v-toolbar-title v-text="title" />
+      
       <v-spacer />
+      <v-btn class="" 
+      v-on:click="profile">
+        Profile
+      </v-btn>
       <v-btn class="" 
       v-on:click="logout">
         Logout
@@ -157,14 +162,11 @@
 </template>
 
 <script>
-// import Vue from 'vue'
-// import axios from 'axios'
-// Vue.use(axios)
 export default {
   name: 'DefaultLayout',
   data () {
     return {
-      clipped: false,
+      clipped: true,
       drawer: false,
       fixed: false,
       dashboard:[
@@ -236,11 +238,25 @@ export default {
         //   console.log(err,"error massge")
         // });
     },
+    profile()
+    {
+      console.log("edit admin profile");
+      this.$router.push(`/admin/profile`);
+    }
   }
 }
 </script>
 <style>
-  .v-btn--is-elevated {
+  /* .v-btn--is-elevated {
     box-shadow:none
-  }
+  } */
+  .v-navigation-drawer{
+    /* box-shadow: 6px 9px 15px -4px rgba(0,0,0,0.65); */
+    border-right: 1px solid #ada9a9;
+    border-bottom: 1px solid #ada9a9;
+    }
+    .theme--light.v-list-item--active::before {
+    opacity: 0.30;
+    border-radius: 20px;
+}
 </style>

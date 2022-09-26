@@ -68,7 +68,6 @@ export default {
       console.log("resdsfds", Response);
       this.posts = Response.data.data;
     });
-    //   this.posts = await this.$content().fetch()
   },
   methods:{
     searchItem()

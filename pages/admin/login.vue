@@ -19,7 +19,7 @@
                 <v-spacer></v-spacer>
                 <v-btn color="primary" @click="submitForm">Login</v-btn>
                 <v-btn color="primary" class="color">
-                  <NuxtLink to="/admin/forgot">Home page</NuxtLink>
+                  <NuxtLink to="/admin/forgot">forgot</NuxtLink>
                 </v-btn>
               </v-card-actions>
             </v-card>

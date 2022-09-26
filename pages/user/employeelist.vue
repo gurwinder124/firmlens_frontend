@@ -7,7 +7,6 @@
         <v-divider class="mx-4" inset vertical></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="reviewDialog" max-width="600px">
-
           <v-card>
             <v-card-title>
               <span class="text-h5">{{ formReview }}</span>
@@ -56,7 +55,6 @@
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
                   </v-col>
-
                   <v-col cols="12" sm="6" md="4">
                     <v-text-field type="password" v-model="editedItem.password" label="Password"></v-text-field>
                   </v-col>
@@ -69,8 +67,8 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn  color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
-              <v-btn  color="green lighten-2"  class="text-white" @click="save"> Save </v-btn>
+              <v-btn color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
+              <v-btn color="green lighten-2" class="text-white" @click="save"> Save </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -79,8 +77,8 @@
             <v-card-title class="text-h5">Are you sure you want to Remove Employee</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" class="text-white"  @click="closeDelete">Cancel</v-btn>
-              <v-btn color="green lighten-2"  class="text-white"  @click="deleteItemConfirm">OK</v-btn>
+              <v-btn color="blue darken-1" class="text-white" @click="closeDelete">Cancel</v-btn>
+              <v-btn color="green lighten-2" class="text-white" @click="deleteItemConfirm">OK</v-btn>
               <v-spacer></v-spacer>
             </v-card-actions>
           </v-card>
@@ -102,10 +100,12 @@
     </template>
 
     <template v-slot:item.actions="{item}">
-      <v-btn class="accpet" color="blue darken-1" dark @click="accpet(item)">
+      <nuxt-link :to="`/user/edit/${item.id}`" class="text-decoration-none text-dark">
+        <v-btn class="accpet" color="blue darken-1" dark>
         Edit
         <v-icon class="subtitle-2" dark right> mdi-pencil </v-icon>
       </v-btn>
+      </nuxt-link>
       <v-btn class="accpet" color="red" dark @click="deleteItem(item)">
         Delete
         <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
@@ -170,15 +170,14 @@ export default {
     },
     items: ['1', '2', '3', '4', '5'],
   }),
-
   mounted() {
-      this.onload();
+    this.onload();
   },
 
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "NEW EMPLOYEE" : "Edit EMPLOYEE";
+      return this.editedIndex === -1 ? "NEW EMPLOYEE" : " ";
     },
     formReview() {
       return this.editedIndex === -1 ? "New Review" : "Edit Review";
@@ -199,7 +198,6 @@ export default {
 
   },
   methods: {
-    // review 
     review(item) {
       this.reviewDialog = true;
       this.userid = item.id;
@@ -214,25 +212,27 @@ export default {
           Authorization: `Bearer ${auth}`,
         },
       };
-      this.$axios.post('/v1/add-review', {
+      await this.$axios.post('/v1/add-review', {
 
         user_id: this.userid,
         rating: this.addReview.rating,
         description: this.addReview.description
-      }, config).then((response) => {
-        console.log(response.data, "response")
-        if (response.data.code == 200) {
-          this.snackbar = true;
-          this.text = `Add Review Success`;
-          this.reviewDialog = false;
-        }
-        else {
-          this.snackbar = true;
-          this.text = `Something Wrong Please Check`;
-        }
-      }).catch((err) => {
-        console.log(err.data.error, 'error')
-      })
+      }, config)
+        .then((response) => {
+          console.log(response.data, "response")
+          if (response.data.code == 200) {
+            this.snackbar = true;
+            this.text = `Add Review Success`;
+            this.reviewDialog = false;
+          }
+          else {
+            this.snackbar = true;
+            this.text = `Something Wrong Please Check`;
+          }
+        })
+        .catch((err) => {
+          console.log(err.data.error, 'error')
+        })
 
 
     },
@@ -256,7 +256,10 @@ export default {
         .then((response) => {
           console.log(response, "12323435456785654");
           this.desserts = response?.data?.data;
-        });
+        })
+        .catch((err) => {
+          console.log(err, 'error')
+        })
     },
     //create  New Sub-user
     async save() {
@@ -289,44 +292,12 @@ export default {
             this.onload();
           }
           this.desserts = response?.data?.data;
+        })
+        .catch((err) => {
+          console.log(err, 'error')
         });
     },
-    // Edit Sub-user
-    async accpet(item) {
-      this.dialog = true
-      this.editedIndex = 1;
-      console.log(item.id, "item data ");
-      console.log(this.defaultItem, "add employee");
-      let auth = localStorage.getItem("user_access_token");
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${auth}`,
-        },
-      };
-      // await this.$axios
-      //   .post(
-      //     "/v1/create-sub-user",
-      //     {
-      //       first_name: this.editedItem.first_name,
-      //       email: this.editedItem.email,
-      //       password: this.editedItem.password,
-      //       designation: this.editedItem.designation,
-      //       last_name: this.editedItem.last_name,
-      //     },
-      //     config
-      //   )
-      //   .then((response) => {
-      //     console.log(response.data.status, " create user");
-      //     if (response.data.code == 200) {
-      //       console.log("test");
-      //       this.close();
-      //       this.onload();
-      //     }
-      //     this.desserts = response?.data?.data;
-      //   });
-    },
-
+  
     // delete Sub user list
 
     deleteItem(item) {
@@ -334,7 +305,7 @@ export default {
       this.data1 = item.id;
     },
 
-    deleteItemConfirm() {
+    async deleteItemConfirm() {
       console.log(this.data1);
       let auth = localStorage.getItem("access_token");
       const config = {
@@ -343,7 +314,7 @@ export default {
           Authorization: `Bearer ${auth}`,
         },
       };
-      this.$axios
+      await this.$axios
         .post(
           "/v1/delete-sub-user",
           {

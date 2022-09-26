@@ -18,20 +18,18 @@
           </v-card>
         </v-dialog>
       </v-toolbar>
+      </template>
+    <template v-slot:item.company_name="{ item }">
+      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none text-dark">{{item.company_name}}</nuxt-link>
     </template>
-    <template>
-      <v-btn class="accpet" color="primary" dark @click="editItem(item)">
-        Accept
+       <template v-slot:item.actions="{ item }">
+      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none" > <v-btn class="accpet" color="green darken-1" dark>
+        Preview
         <v-icon class="subtitle-2" dark right>
-          mdi-checkbox-marked-circle
+          mdi-eye
         </v-icon>
       </v-btn>
-      <v-btn class="accpet" color="red" dark @click="deleteItem(item)">
-        Decline
-        <v-icon dark right class="subtitle-2">
-          mdi-cancel
-        </v-icon>
-      </v-btn>
+    </nuxt-link>
     </template>
     <template v-slot:no-data>
       <v-btn color="primary">
@@ -58,7 +56,7 @@ export default {
       { text: 'Company Name', value: 'company_name' },
       { text: 'Company Type', value: 'company_type' },
       // { text: 'Domain Name', value: 'domain_name', },
-      // { text: 'Actions', value: 'actions', sortable: false },
+      { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
     editedIndex: -1,
@@ -77,7 +75,7 @@ export default {
       protein: 0,
     },
   }),
-  async mounted() {
+   mounted() {
     let auth = localStorage.getItem('access_token')
     if (auth) {
       const config = {
@@ -86,7 +84,7 @@ export default {
         Authorization: `Bearer ${auth}`,
       }
     }
-    await this.$axios
+     this.$axios
       .post("/admin/company-list", { status: "2" }, config)
       .then((response) => {
         console.log(response, "12323435456785654");

@@ -12,33 +12,6 @@
             </div>
         </div>
         <div class="row">
-            <!-- <div class="col-xl-4 col-3">
-
-                <v-list-group :value="true">
-                    <template v-slot:activator>
-                        <v-list-item-title>Category</v-list-item-title>
-                    </template>
-
-                    <v-list>
-                        <v-list-item v-for="(item, i) in company" :key="i" :to="item.to" router exact>
-                            <v-list-item-action>
-                                <v-icon>{{ item.icon }}</v-icon>
-                            </v-list-item-action>
-                            <v-list-item-content>
-                                <v-list-item-title v-text="item.title" />
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-list>
-                </v-list-group>
-                <v-list-item v-for="(item, i) in items" :key="i" :to="item.to" router exact>
-                    <v-list-item-action>
-                        <v-icon>{{ item.icon }}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title v-text="item.title" />
-                    </v-list-item-content>
-                </v-list-item>
-            </div> -->
             <div class="col-xl-12 col-12">
                 <table class="w-100">
                     <thead>
@@ -46,40 +19,36 @@
                         <th class="fs-18 color w-25">Company List</th>
                         <th class="fs-18 color w-25">Rating</th>
                     </thead>
-                    <tbody >
+                    <tbody>
                         <tr v-for="(company_list,id) in Company_list" :key="company_list.id" class="height">
-                        <!-- <td v-if="company_lis.image == ''">
+                            <!-- <td v-if="company_lis.image == ''">
                             <div class="w-25 ">
                             <img src="../../assets/imges/companylogo.png" alt="">
                         </div>
                         </td> -->
-                        <td >
-                            <div class="w-15 ">
-                            <img src="../../assets/imges/companylogo.png" class="w-50" alt="">
-                        </div>
-                        </td>
-                        
-                        <td>
-                            <div class="card mb-4 border-0 width">
-                                <h5 class="border-0">{{company_list.company_name}}</h5>
-                                  <li>{{company_list.company_type}}</li>
-                                  <v-btn  class="w-50" >HR Contact</v-btn>
-                                  <!-- <button class="edit  border border-primary w-45">HR Contact</button> -->
-                            </div>
-                        </td>
-                        <td>
-                            <div class="card m-4 mb-4 border-0">
-                                <div class="d-flex">
-                                    <!-- <img src="../../assets/imges/star-full.svg" alt="" width="20">
-                                    <img src="../../assets/imges/star-full.svg" alt="" width="20">
-                                    <img src="../../assets/imges/star-full.svg" alt="" width="20"> -->
+                            <td>
+                                <div class="w-15 ">
+                                    <img src="../../assets/imges/companylogo.png" class="w-50" alt="">
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="card mb-4 border-0 width">
+                                    <h5 class="border-0">{{company_list.company_name}}</h5>
+                                    <li>{{company_list.company_type}}</li>
+                                    <v-btn class="w-50">HR Contact</v-btn>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="card m-4 mb-4 border-0">
+                                    <div class="d-flex">
+
+                                    </div>
+                                    <p>Company Description</p>
 
                                 </div>
-                                <p>Company Description</p>
-
-                            </div>
-                        </td>
-                       </tr>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -89,11 +58,9 @@
 </template>
     
 <script>
-// import axios from "axios";
 
 export default {
     layout: "userdefault",
-//   middleware:'userauth',
     data() {
         return {
             Company_list: [],
@@ -121,17 +88,17 @@ export default {
         }
     },
 
-        async mounted() {
-    let auth = localStorage.getItem("user_access_token");
-    if (auth) {
-      console.log("user login")
-      this.onload();
-    }
-    else {
-      this.$router.push(`/login`);
-      console.log("usernot login")
-    }
-  },
+    mounted() {
+        let auth = localStorage.getItem("user_access_token");
+        if (auth) {
+            console.log("user login")
+            this.onload();
+        }
+        else {
+            this.$router.push(`/login`);
+            console.log("usernot login")
+        }
+    },
     methods: {
         searchItem() {
 
@@ -146,24 +113,24 @@ export default {
                 console.log(this.Company_list1, "ele")
             })
         },
-     async   onload(){
+        async onload() {
 
             let auth = localStorage.getItem('user_access_token');
-        let company_id = localStorage.getItem('user_company_id');
-        const config = {
-            headers: {
-                'Content-type': 'application/json',
-                Authorization: `Bearer ${auth}`,
-            },
-        };
-        await this.$axios
-            .get(
-                `v1/company-list-byuser`,
-                config
-            )
-            .then((response) => {
-                this.Company_list = response.data.data
-            });
+            let company_id = localStorage.getItem('user_company_id');
+            const config = {
+                headers: {
+                    'Content-type': 'application/json',
+                    Authorization: `Bearer ${auth}`,
+                },
+            };
+            await this.$axios
+                .get(
+                    `v1/company-list-byuser`,
+                    config
+                )
+                .then((response) => {
+                    this.Company_list = response.data.data
+                });
         }
     }
 };
@@ -173,10 +140,12 @@ export default {
 .v-rating button {
     font-size: 20px !important;
 }
-.height{
- height: 157px !important;
+
+.height {
+    height: 157px !important;
     border-bottom: 8px solid #e3dddd;
 }
+
 .edit {
     padding: 5px;
 }
@@ -188,10 +157,12 @@ export default {
 .fs-18 {
     font-size: 18px;
 }
-.w-45{
+
+.w-45 {
     width: 33% !important;
 }
-.color{
+
+.color {
     color: rgba(0, 0, 0, 0.6)
 }
 </style>

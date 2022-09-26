@@ -41,7 +41,7 @@
           <v-btn   class="mr-4 bg-primary" depressed @click="submit">
             Login
           </v-btn>
-          <NuxtLink to="" class="text-decoration-underline ">Forgot Password?</NuxtLink>
+          <NuxtLink to="/resetpassword" class="text-decoration-underline ">Forgot Password?</NuxtLink>
         </form>
         <template>
           <div class="text-center ma-2 v-snack">
