@@ -27,7 +27,7 @@
   import { validationMixin } from 'vuelidate'
   import { required, maxLength, email } from 'vuelidate/lib/validators'
   export default {
-    layout: 'userdefault',
+    layout: 'default',
     name: "registerPage",
     mixins: [validationMixin],
     validations: {

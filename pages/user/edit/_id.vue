@@ -4,18 +4,19 @@
       <form class="form">
         <h2>Edit Employee</h2>
         <div class="d-flex mt-2 ">
-          <v-text-field class="m-20 " filled v-model="edituser.first_name" :error-messages="edituser.first_nameErrors" :counter="20"
-            label="First Name" required @input="$v.first_name.$touch()"></v-text-field>
-            <v-text-field class="m-20" v-model="edituser.last_name" filled :error-messages="edituser.last_nameErrors" :counter="15" label="Last Name"
-            required @input="$v.last_name.$touch()" @blur="$v.last_name.$touch()"></v-text-field>
-          </div>
-         <div class="d-flex">
-        
-         <v-text-field class="m-20" v-model="edituser.designation" filled :error-messages="edituser.designationErrors" label="Designation Type"
-            required @input="$v.designation.$touch()"></v-text-field>
-            <v-text-field class="m-20" v-model="edituser.email" filled :error-messages="edituser.emailErrors" label="E-mail" required
-              @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
-         </div> 
+          <v-text-field class="m-20 " filled v-model="edituser.first_name" :error-messages="edituser.first_nameErrors"
+            :counter="20" label="First Name" required @input="$v.first_name.$touch()"></v-text-field>
+          <v-text-field class="m-20" v-model="edituser.last_name" filled :error-messages="edituser.last_nameErrors"
+            :counter="15" label="Last Name" required @input="$v.last_name.$touch()" @blur="$v.last_name.$touch()">
+          </v-text-field>
+        </div>
+        <div class="d-flex">
+
+          <v-text-field class="m-20" v-model="edituser.designation" filled :error-messages="edituser.designationErrors"
+            label="Designation Type" required @input="$v.designation.$touch()"></v-text-field>
+          <v-text-field class="m-20" v-model="edituser.email" filled :error-messages="edituser.emailErrors"
+            label="E-mail" required @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
+        </div>
         <v-btn class="mr-4 bg-primary" @click="submit">
           Edit
         </v-btn>
@@ -41,7 +42,6 @@ import { validationMixin } from 'vuelidate'
 import { required, maxLength, email } from 'vuelidate/lib/validators'
 export default {
   layout: 'userdefault',
- 
   mixins: [validationMixin],
   validations: {
     first_name: { required, maxLength: maxLength(20) },
@@ -52,13 +52,13 @@ export default {
   data() {
     return {
       snackbar: false,
-    text: ``,
-edituser:{
-  first_name: '',
-  last_name: '',
-  designation: '',
-  email: '',
-}
+      text: ``,
+      edituser: {
+        first_name: '',
+        last_name: '',
+        designation: '',
+        email: '',
+      }
     }
   },
   computed: {
@@ -91,27 +91,27 @@ edituser:{
       return errors
     },
   },
-  mounted()
-  {    let auth = localStorage.getItem("user_access_token");
-      const config = {
-        headers: {
-          'Content-type': 'application/json',
-          Authorization: `Bearer ${auth}`,
-        },
-      };
+  mounted() {
+    let auth = localStorage.getItem("user_access_token");
+    const config = {
+      headers: {
+        'Content-type': 'application/json',
+        Authorization: `Bearer ${auth}`,
+      },
+    };
     console.log('bsdkhbaskjd')
     console.log(`${this.$route.params.id}`);
-    this.$axios.get(`v1/sub-user/${this.$route.params.id}`,config).then((resp)=>{
-        console.log(resp,"nfskjsdfkjbdksj");
-        this.edituser = resp.data.user
-        console.log(this.edituser.first_name,"nfskjsdfkjbdksj");
+    this.$axios.get(`v1/sub-user/${this.$route.params.id}`, config).then((resp) => {
+      console.log(resp, "nfskjsdfkjbdksj");
+      this.edituser = resp.data.user
+      console.log(this.edituser.first_name, "nfskjsdfkjbdksj");
 
-      })
-    },
+    })
+  },
 
   methods: {
-  async  submit() {
-      console.log(this.edituser,"fksdnfkjsdbg")
+    async submit() {
+      console.log(this.edituser, "fksdnfkjsdbg")
       this.$v.$touch()
       let auth = localStorage.getItem("user_access_token");
       const config = {
@@ -120,23 +120,22 @@ edituser:{
           Authorization: `Bearer ${auth}`,
         },
       };
-     await this.$axios
+      await this.$axios
         .post("v1/update-sub-user", {
-          id:this.$route.params.id,
-          first_name:this.edituser.first_name,
-         last_name :this.edituser.last_name,
-         designation:this.edituser.designation,
-         email:this.edituser.email,
+          id: this.$route.params.id,
+          first_name: this.edituser.first_name,
+          last_name: this.edituser.last_name,
+          designation: this.edituser.designation,
+          email: this.edituser.email,
         }, config)
         .then((resp) => {
           console.log(resp)
-          if(resp.data.code == 200)
-          {
+          if (resp.data.code == 200) {
             this.snackbar = true;
             this.text = `${resp.data.msg}`;
             this.$router.push("/user/employeelist")
           }
-          else{
+          else {
             this.snackbar = true;
             this.text = "Something Wrong Please Check"
           }
@@ -153,8 +152,7 @@ edituser:{
 }
 </script>
 <style scoped>
-  .m-20
-  {
-    margin-right: 20px;
-  }
+.m-20 {
+  margin-right: 20px;
+}
 </style>

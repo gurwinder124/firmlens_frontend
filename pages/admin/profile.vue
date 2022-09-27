@@ -30,10 +30,9 @@
                         </div>
                     </div>
                 </v-card>
-
             </div>
             <div class="col-11 text-right">
-                <nuxt-link :to="`/admin/edit/adminprofile`" >
+                <nuxt-link :to="`/admin/profile/1`" >
                     <v-btn class="accpet" color="primary" dark>
                         Edit
                         <v-icon class="subtitle-2" dark right>

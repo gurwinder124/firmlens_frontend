@@ -103,7 +103,6 @@
   <script>
   import Vue from 'vue'
   import axios from 'axios'
-import { title } from 'process'
   Vue.use(axios)
   export default {
     name: 'userdefault',
@@ -124,15 +123,15 @@ import { title } from 'process'
             to: '/user/employeelist'
           },
           {
-            icon:'mdi-account-multiple',
+            icon:'mdi-bank',
             title:'Find Company',
             to:'/user/findCompany'
           },
-          {
-            icon:'mdi-account-multiple',
-            title:'test',
-            to:'/user/test'
-          }
+          // {
+          //   icon:'mdi-account-multiple',
+          //   title:'test',
+          //   to:'/user/test'
+          // }
         ],
       
         items: [
@@ -190,7 +189,7 @@ import { title } from 'process'
     userprofile()
     {
       console.log('user profile')
-            this.$router.push(`/user/userprofile`);
+            this.$router.push(`/user/profile`);
 
     }
   }

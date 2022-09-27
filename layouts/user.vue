@@ -11,7 +11,7 @@
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="home">Home</v-btn>
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="blog">Blog</v-btn>
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="Contact">Contact us</v-btn>
-            <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="Company_profile">Company Profile</v-btn>
+            <!-- <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="Company_profile">Company Profile</v-btn> -->
 
           </div>
           <div v-if="auth == null ">
@@ -55,9 +55,9 @@ export default {
     blog() {
       this.$router.push(`/blog`);
     },
-    Company_profile(){
-      this.$router.push('/companyprofile')
-    },
+    // Company_profile(){
+    //   this.$router.push('/companyprofile')
+    // },
     Contact() {
       this.$router.push(`/contact`);
     },
@@ -112,6 +112,10 @@ export default {
   background-size: cover;
   /* height: 100vh; */
   margin: 0px auto;
+}
+
+.v-btn--is-elevated{
+  box-shadow: none;
 }
 </style>
   
