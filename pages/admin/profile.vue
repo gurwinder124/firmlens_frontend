@@ -1,6 +1,5 @@
 <template>
-    <div>
-        <div class="row">
+    <div class="row">
             <div class="col-4">
                 <v-card class="mx-4 my-12 text-center border-none p-38" color="blue-grey lighten-4" max-width="600">
                     <template slot="progress">
@@ -32,7 +31,7 @@
                 </v-card>
             </div>
             <div class="col-11 text-right">
-                <nuxt-link :to="`/admin/profile/1`" >
+                <nuxt-link :to="`/admin/profile/1`">
                     <v-btn class="accpet" color="primary" dark>
                         Edit
                         <v-icon class="subtitle-2" dark right>
@@ -42,7 +41,6 @@
                 </nuxt-link>
             </div>
         </div>
-    </div>
 </template>
 <script>
 

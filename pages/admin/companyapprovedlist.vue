@@ -1,44 +1,47 @@
 
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>Company Approved List</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="dialogDelete" max-width="500px">
-          <v-card>
-            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
+  <v-main class="p-0 mt-4">
+    <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Company Approved List</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="dialogDelete" max-width="500px">
+            <v-card>
+              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
       </template>
-    <template v-slot:item.company_name="{ item }">
-      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none text-dark">{{item.company_name}}</nuxt-link>
-    </template>
-       <template v-slot:item.actions="{ item }">
-      <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none" > <v-btn class="accpet" color="green darken-1" dark>
-        Preview
-        <v-icon class="subtitle-2" dark right>
-          mdi-eye
-        </v-icon>
-      </v-btn>
-    </nuxt-link>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary">
-        Reset
-      </v-btn>
-    </template>
-  </v-data-table>
+      <template v-slot:item.company_name="{ item }">
+        <nuxt-link :to="`/admin/company/${item.id}`" class="text-decoration-none text-dark">{{item.company_name}}
+        </nuxt-link>
+      </template>
+      <template v-slot:item.actions="{ item }">
+        <v-btn class="pa-2" small color="primary" dark :to="`/admin/company/${item.id}`">
+          Preview
+          <v-icon class="subtitle-2" dark right>
+            mdi-eye
+          </v-icon>
+        </v-btn>
+
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary">
+          Reset
+        </v-btn>
+      </template>
+    </v-data-table>
+  </v-main>
+
 </template>
-  </template>
   
 <script>
 export default {
@@ -75,27 +78,27 @@ export default {
       protein: 0,
     },
   }),
-   mounted() {
+  mounted() {
     let auth = localStorage.getItem('access_token')
     if (auth) {
       const config = {
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${auth}`,
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+        }
       }
-    }
-     this.$axios
-      .post("/admin/company-list", { status: "2" }, config)
-      .then((response) => {
-        console.log(response, "12323435456785654");
-        this.desserts = response?.data?.data?.company_list;
-      });
+      this.$axios
+        .post("/admin/company-list", { status: "2" }, config)
+        .then((response) => {
+          console.log(response, "12323435456785654");
+          this.desserts = response?.data?.data?.company_list;
+        });
     }
     else {
       this.$router.push(`/admin/login`);
       console.log("usernot login")
     }
- 
+
   },
 
   computed: {
