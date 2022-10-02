@@ -1,22 +1,33 @@
 <template>
-  <v-main class="p-0">
-    <v-row> 
-      <v-col cols="6" >
-        <v-card class="border border-secondary">
-          <div class="d-flex flex-column justify-content-around align-items-center">
-            <v-card-title>Total Employee</v-card-title>
-            <h5>{{count.emp_count}}</h5>
-          </div>
+  <v-main class="p-0 mt-4">
+    <v-row>
+      <v-col cols="6">
+        <v-card class="pa-4">
+          <v-row align="center" class="mx-0">
+            <v-icon large left color="success">
+              mdi-account-outline
+            </v-icon>
+            <v-card-title class="text-h5">Total Employee</v-card-title>
+
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <v-card-title class="text-h4">{{count.emp_count}}</v-card-title>
+          </v-row>
         </v-card>
       </v-col>
       <v-col cols="6">
-        <v-card class="border border-secondary">
-          <div>
-            <div class="d-flex flex-column justify-content-around align-items-center">
-              <v-card-title>Total Reviews</v-card-title>
-              <h5>{{count.emp_review}}</h5>
-            </div>
-          </div>
+        <v-card class="pa-4">
+          <v-row align="center" class="mx-0">
+            <v-icon large left color="success">
+              mdi-account-outline
+            </v-icon>
+            <v-card-title class="text-h5">Total Reviews</v-card-title>
+
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <v-card-title class="text-h4">{{count.emp_review}}</v-card-title>
+          </v-row>
+
         </v-card>
       </v-col>
     </v-row>
@@ -34,7 +45,7 @@ export default {
     return {
       email: null,
       password: null,
-      count:[],
+      count: [],
     };
   },
   methods: {
@@ -66,12 +77,12 @@ export default {
     };
     if (auth) {
       console.log("user login")
-      this.$axios.get('/v1/user-stats',config).then((response) => {
-      console.log(response.data.data)
-      this.count =  response.data.data
-    }).catch((err) =>
-      console.log(err)
-    )
+      this.$axios.get('/v1/user-stats', config).then((response) => {
+        console.log(response.data.data)
+        this.count = response.data.data
+      }).catch((err) =>
+        console.log(err)
+      )
     }
     else {
       this.$router.push(`/login`);

@@ -2,92 +2,49 @@
   <v-main class="p-0 mt-4">
     <v-row>
       <v-col cols="4">
-        <v-card>
-          <div class="d-flex flex-column justify-content-around align-items-center">
-          <v-card-title>Total Company</v-card-title>
-          <!-- <h5>dssf</h5> -->
-          <h5>{{companyCount.totalcomapny_list}}</h5>
-        </div>
+        <v-card class="pa-4">
+          <v-row align="center" class="mx-0">
+            <v-icon large left color="success">
+              mdi-checkbox-marked-circle
+            </v-icon>
+            <v-card-title class="text-h5">Total Company</v-card-title>
+
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <v-card-title class="text-h4">{{companyCount.totalcomapny_list}}</v-card-title>
+          </v-row>
+        </v-card>
+      </v-col>
+
+      <v-col cols="4">
+        <v-card class="pa-4">
+          <v-row align="center" class="mx-0">
+            <v-icon large left color="success">
+              mdi-account-check-outline
+            </v-icon>
+            <v-card-title class="text-h5">Company Approved</v-card-title>
+
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <v-card-title class="text-h4">{{companyCount.totalapproved}}</v-card-title>
+          </v-row>
         </v-card>
       </v-col>
       <v-col cols="4">
-        <v-card>
-          <div>
-          <div class="d-flex flex-column justify-content-around align-items-center">
-            <v-card-title>Company Approved</v-card-title>
-            <!-- <h5>fsdfd</h5> -->
-            <h5>{{companyCount.totalapproved}}</h5>
-            </div>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col cols="4">
-        <v-card>
-          <div class=" d-flex flex-column justify-content-around align-items-center">
-            <v-card-title>Company Pending</v-card-title>
-            <!-- <h5>fsf</h5> -->
-            <h5>{{companyCount.totalpending}}</h5>
-          </div>
+        <v-card class="pa-4">
+          <v-row align="center" class="mx-0">
+            <v-icon large left color="warning">
+              mdi-account-clock-outline
+            </v-icon>
+            <v-card-title class="text-h5">Company Pending</v-card-title>
+          </v-row>
+          <v-row align="center" class="mx-0">
+            <v-card-title class="text-h4">{{companyCount.totalpending}}</v-card-title>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
-    <!-- <v-row class="d-flex justify-content-around">
-      <v-col cols="5">
-        <template>
-  <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in desserts"
-          :key="item.name"
-        >
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
-</template>
-      </v-col>
-    
-      <v-col cols="5">
-        <template>
-  <v-simple-table>
-    <template v-slot:default>
-      <thead>
-        <tr>
-          <th class="text-left">
-            Name
-          </th>
-          <th class="text-left">
-            Calories
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="item in desserts"
-          :key="item.name"
-        >
-          <td>{{ item.name }}</td>
-          <td>{{ item.calories }}</td>
-        </tr>
-      </tbody>
-    </template>
-  </v-simple-table>
-</template>
-      </v-col>
-    </v-row> -->
+
   </v-main>
 </template>
   
@@ -98,7 +55,7 @@ export default {
   name: "IndexPage",
   data: () => ({
     selection: 1,
-    companyCount: [],  
+    companyCount: [],
   }),
 
   methods: {

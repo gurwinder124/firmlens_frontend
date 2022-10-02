@@ -1,126 +1,128 @@
 
 <template>
-  <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-1">
-    <template v-slot:top>
-      <v-toolbar flat>
-        <v-toolbar-title>Employee List</v-toolbar-title>
-        <v-divider class="mx-4" inset vertical></v-divider>
-        <v-spacer></v-spacer>
-        <v-dialog v-model="reviewDialog" max-width="600px">
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formReview }}</span>
-            </v-card-title>
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-select :items="items" v-model="addReview.rating" label="Rating"></v-select>
-                    <!-- <v-text-field v-model="addReview.rating" label="Rating"></v-text-field> -->
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="addReview.description" label="Description"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
+  <v-main class="p-0 mt-4">
+    <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-1">
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Employee List</v-toolbar-title>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
+          <v-dialog v-model="reviewDialog" max-width="600px">
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formReview }}</span>
+              </v-card-title>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-select :items="items" v-model="addReview.rating" label="Rating"></v-select>
+                      <!-- <v-text-field v-model="addReview.rating" label="Rating"></v-text-field> -->
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="addReview.description" label="Description"></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
 
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="reviewclose"> Cancel </v-btn>
-              <v-btn color="blue darken-1" text @click="reviewsave"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialog" max-width="600px">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn color="blue darken-1" dark class="mb-2" v-bind="attrs" v-on="on">
-              Add New Employee
-            </v-btn>
-          </template>
-          <v-card>
-            <v-card-title>
-              <span class="text-h5">{{ formTitle }}</span>
-            </v-card-title>
-
-            <v-card-text>
-              <v-container>
-                <v-row>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.first_name" label="First Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.last_name" label="Last Name"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field type="password" v-model="editedItem.password" label="Password"></v-text-field>
-                  </v-col>
-                  <v-col cols="12" sm="6" md="4">
-                    <v-text-field v-model="editedItem.designation" label="Designation"></v-text-field>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card-text>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
-              <v-btn color="green lighten-2" class="text-white" @click="save"> Save </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-        <v-dialog v-model="dialogDelete" max-width="550px" class="py-4">
-          <v-card class="py-5">
-            <v-card-title class="text-h5">Are you sure you want to Remove Employee</v-card-title>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" class="text-white" @click="closeDelete">Cancel</v-btn>
-              <v-btn color="green lighten-2" class="text-white" @click="deleteItemConfirm">OK</v-btn>
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-      </v-toolbar>
-      <template>
-        <div class="text-center ma-2 v-snack">
-          <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position">
-            {{ text }}
-
-            <template v-slot:action="{ attrs }">
-              <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
-                Close
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="reviewclose"> Cancel </v-btn>
+                <v-btn color="blue darken-1" text @click="reviewsave"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialog" max-width="600px">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn color="blue darken-1" dark class="mb-2" v-bind="attrs" v-on="on">
+                Add New Employee
               </v-btn>
             </template>
-          </v-snackbar>
-        </div>
-      </template>
-    </template>
+            <v-card>
+              <v-card-title>
+                <span class="text-h5">{{ formTitle }}</span>
+              </v-card-title>
 
-    <template v-slot:item.actions="{item}">
-      <nuxt-link :to="`/user/edit/${item.id}`" class="text-decoration-none text-dark">
-        <v-btn class="accpet" color="blue darken-1" dark>
-        Edit
-        <v-icon class="subtitle-2" dark right> mdi-pencil </v-icon>
-      </v-btn>
-      </nuxt-link>
-      <v-btn class="accpet" color="red" dark @click="deleteItem(item)">
-        Delete
-        <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
-      </v-btn>
-      <v-btn class="accpet" color="green lighten-2" dark @click="review(item)">
-        Review
-        <v-icon dark right class="subtitle-2"> mdi-star </v-icon>
-      </v-btn>
-    </template>
-    <template v-slot:no-data>
-      <v-btn color="primary"> Reset </v-btn>
-    </template>
-  </v-data-table>
+              <v-card-text>
+                <v-container>
+                  <v-row>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.first_name" label="First Name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.last_name" label="Last Name"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.email" label="Email"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field type="password" v-model="editedItem.password" label="Password"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" sm="6" md="4">
+                      <v-text-field v-model="editedItem.designation" label="Designation"></v-text-field>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card-text>
+
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
+                <v-btn color="green lighten-2" class="text-white" @click="save"> Save </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+          <v-dialog v-model="dialogDelete" max-width="550px" class="py-4">
+            <v-card class="py-5">
+              <v-card-title class="text-h5">Are you sure you want to Remove Employee</v-card-title>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" class="text-white" @click="closeDelete">Cancel</v-btn>
+                <v-btn color="green lighten-2" class="text-white" @click="deleteItemConfirm">OK</v-btn>
+                <v-spacer></v-spacer>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-toolbar>
+        <template>
+          <div class="text-center ma-2 v-snack">
+            <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position">
+              {{ text }}
+
+              <template v-slot:action="{ attrs }">
+                <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                  Close
+                </v-btn>
+              </template>
+            </v-snackbar>
+          </div>
+        </template>
+      </template>
+
+      <template v-slot:item.actions="{item}">
+        <nuxt-link :to="`/user/edit/${item.id}`" class="text-decoration-none text-dark">
+          <v-btn class="accpet" color="blue darken-1" dark>
+            Edit
+            <v-icon class="subtitle-2" dark right> mdi-pencil </v-icon>
+          </v-btn>
+        </nuxt-link>
+        <v-btn class="accpet" color="red" dark @click="deleteItem(item)">
+          Delete
+          <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
+        </v-btn>
+        <v-btn class="accpet" color="green lighten-2" dark @click="review(item)">
+          Review
+          <v-icon dark right class="subtitle-2"> mdi-star </v-icon>
+        </v-btn>
+      </template>
+      <template v-slot:no-data>
+        <v-btn color="primary"> Reset </v-btn>
+      </template>
+    </v-data-table>
+  </v-main>
+
 </template>
-  </template>
   
 <script>
 export default {
@@ -297,7 +299,7 @@ export default {
           console.log(err, 'error')
         });
     },
-  
+
     // delete Sub user list
 
     deleteItem(item) {

@@ -1,7 +1,7 @@
 
 <template>
 
-    <div class="container">
+    <div class="container mt-4">
         <div class="row">
             <div class="col-4">
                 <h3>Find Company</h3>
@@ -76,13 +76,6 @@ export default {
                 },
                 {
                     title: 'Company Approved',
-                },
-            ],
-            items: [
-                {
-                    // icon: 'mdi-account-multiple',
-                    // title: 'Employee List',
-                    // to: '/user/employeelist'
                 },
             ],
         }
