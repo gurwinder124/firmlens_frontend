@@ -43,6 +43,9 @@
           </v-row>
         </v-card>
       </v-col>
+      <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
     </v-row>
 
   </v-main>
@@ -56,11 +59,13 @@ export default {
   data: () => ({
     selection: 1,
     companyCount: [],
+    loading:false,
   }),
 
   methods: {
   },
   mounted() {
+    this.loading = true;
     let auth = localStorage.getItem("access_token");
     const config = {
       headers: {
@@ -72,7 +77,11 @@ export default {
       console.log("user login")
       this.$axios.get('admin/comapny-count-list', config).then((Response) => {
         this.companyCount = Response.data.data
-        console.log(this.companyCount, "mfdgjf")
+        console.log(Response.data.code, "mfdgjf")
+        if(Response.data.code == 200)
+        {
+          this.loading= false
+        }
       })
     }
     else {
@@ -82,4 +91,36 @@ export default {
   }
 };
 </script>
+<style>
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
+</style>
   

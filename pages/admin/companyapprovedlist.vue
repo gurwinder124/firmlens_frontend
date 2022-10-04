@@ -1,23 +1,15 @@
 
 <template>
   <v-main class="p-0 mt-4">
-    <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
+    <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
+    <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-1">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Company Approved List</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm">OK</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
         </v-toolbar>
       </template>
       <template v-slot:item.company_name="{ item }">
@@ -58,27 +50,14 @@ export default {
       },
       { text: 'Company Name', value: 'company_name' },
       { text: 'Company Type', value: 'company_type' },
-      // { text: 'Domain Name', value: 'domain_name', },
       { text: 'Actions', value: 'actions', sortable: false },
     ],
     desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+    loading:false,
+
   }),
   mounted() {
+    this.loading= true
     let auth = localStorage.getItem('access_token')
     if (auth) {
       const config = {
@@ -92,6 +71,10 @@ export default {
         .then((response) => {
           console.log(response, "12323435456785654");
           this.desserts = response?.data?.data?.company_list;
+          if(response.data.code == 200)
+          {
+            this.loading = false
+          }
         });
     }
     else {
@@ -99,65 +82,6 @@ export default {
       console.log("usernot login")
     }
 
-  },
-
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-    },
-  },
-
-  watch: {
-    dialog(val) {
-      val || this.close()
-    },
-    dialogDelete(val) {
-      val || this.closeDelete()
-    },
-  },
-  methods: {
-    editItem(item) {
-      console.log(item, "dsififba")
-      // this.editedIndex = this.desserts.indexOf(item)
-      // this.editedItem = Object.assign({}, item)
-      // this.dialog = true
-    },
-
-    deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
-    deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
-      this.closeDelete()
-    },
-
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    closeDelete() {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
-      this.close()
-    },
   },
 }
 </script>
@@ -167,4 +91,33 @@ export default {
   font-size: 10px;
   width: 79px;
 }
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 </style>

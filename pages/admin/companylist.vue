@@ -1,52 +1,29 @@
 
 <template>
   <v-main class="p-0 mt-4">
-    <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-1">
+    <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
+    <v-data-table :headers="headers" :items="company_list" sort-by="name" class="elevation-1">
       <template v-slot:top>
-        <v-toolbar flat>
+        <v-toolbar flat >
           <v-toolbar-title>Company List</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
+          <v-divider class="mx-4" inset vertical></v-divider>
+
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialog" max-width="500px">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
-
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.type" label="type"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.domain" label="domain (g)"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.status" label="status (g)"></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field v-model="editedItem.action" label="action (g)"></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
-
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-select  class="selected mt-10" :items="company" v-model="e1" 
+                            label="Select" item-text="status"
+                             item-value="abbr"
+                             v-on:change="changeRoute" 
+                             ></v-select>
+          <v-divider class="mx-4" inset vertical></v-divider>
+          <v-spacer></v-spacer>
           <v-dialog v-model="dialogDelete" max-width="576px" class="py-4">
             <v-card class="py-5">
               <v-card-title class="text-h5">Are you sure you want to Decline the Company?</v-card-title>
@@ -61,10 +38,12 @@
         </v-toolbar>
         <template>
           <div class="text-center ma-2 v-snack">
-            <v-snackbar v-model="snackbar" right top color="blue darken-1" class="v-snackbar-toast position">
+            <v-snackbar :timeout="timeout" :color="color" :top="y === 'top'" 
+              :right="x === 'right'" :vertical="mode === 'vertical'" v-model="snackbar"
+              class="v-snackbar-toast position">
               {{ text }}
               <template v-slot:action="{ attrs }">
-                <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
                   Close
                 </v-btn>
               </template>
@@ -120,11 +99,11 @@
 export default {
   layout: "admin",
   data: () => ({
+
     data1: "",
     dialog: false,
     dialogDelete: false,
-    snackbar: false,
-    text: ``,
+    e1:null,
     headers: [
       {
         text: "S.no.",
@@ -139,25 +118,34 @@ export default {
       { text: "Status", value: "request_status" },
       { text: "Actions", value: "actions", sortable: false },
     ],
-    desserts: [],
-    editedIndex: -1,
-    editedItem: {
-      name: "",
-      type: 0,
-      domain: 0,
-      status: 0,
-      action: 0,
-    },
-    defaultItem: {
-      name: "",
-      type: 0,
-      domain: 0,
-      status: 0,
-      action: 0,
-    },
+    company_list: [],
+    loading:false,
+    company: [
+        {
+          'status': 'Company List',
+          'abbr': '0'
+        },
+        {
+          'status': 'Company Pending',
+          'abbr': '1'
+        },
+        {
+          'status': 'Company Approved',
+          'abbr': '2'
+        },
+      ],
+      snackbar: false,
+    y: 'top',
+    x: 'right',
+    mode: '',
+    timeout: 6000,
+    color: '',
+    text: '',
+    search: '',
   }),
 
   mounted() {
+
     let auth = localStorage.getItem("access_token");
     if (auth) {
       console.log("user login")
@@ -169,12 +157,6 @@ export default {
     }
   },
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1 ? "New Item" : "Edit Item";
-    },
-  },
-
   watch: {
     dialog(val) {
       val || this.close();
@@ -184,7 +166,22 @@ export default {
     },
   },
   methods: {
+    async changeRoute(a) {
+      let auth = localStorage.getItem("access_token");
+      const config = {
+        headers: {
+          'Content-type': 'application/json',
+          Authorization: `Bearer ${auth}`,
+        },
+      };
+      await this.$axios
+        .post("/admin/company-list", { status: a }, config)
+        .then((response) => {
+          this.company_list = response?.data?.data.company_list;
+        });
+      },
     async onload() {
+      this.loading = true
       let auth = localStorage.getItem("access_token");
       const config = {
         headers: {
@@ -195,7 +192,12 @@ export default {
       await this.$axios
         .post("/admin/company-list", { status: this.status }, config)
         .then((response) => {
-          this.desserts = response?.data?.data.company_list;
+          console.log(response.data);
+          this.company_list = response?.data?.data.company_list;
+          if(response.data.code == 200)
+          {
+            this.loading = false
+          }
         });
     },
     async accpet(item) {
@@ -214,16 +216,18 @@ export default {
         }, config)
         .then((response) => {
           console.log(response)
-          this.desserts = response?.data?.data;
+          this.company_list = response?.data?.data;
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = "Company Accpet SuccessFully"
+            this.color = 'success'
             this.onload();
           }
         }).catch((err) => {
           console.log("Something Wrong")
           this.snackbar = true;
-          this.text = "Company Accpet SuccessFully"
+          this.text = "Something Please Check"
+          this.color= 'error'
         });
     },
 
@@ -249,15 +253,17 @@ export default {
         }, config)
         .then((response) => {
           console.log(response)
-          this.desserts = response?.data?.data;
+          this.company_list = response?.data?.data;
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = "Company Decline SuccessFully";
+            this.color='success'
             this.onload();
           }
           else {
             this.snackbar = true;
             this.text = "Something Wrong Please Check";
+            this.color = 'error '
           }
         }).catch((err) => {
           console.log(err)
@@ -272,15 +278,6 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
     },
-
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem);
-      } else {
-        this.desserts.push(this.editedItem);
-      }
-      this.close();
-    },
   },
   mounted() {
     this.onload();
@@ -293,4 +290,34 @@ export default {
 .c-pointer {
   cursor: pointer;
 }
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+
 </style>

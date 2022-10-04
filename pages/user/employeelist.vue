@@ -1,12 +1,22 @@
 
 <template>
+    
   <v-main class="p-0 mt-4">
-    <v-data-table :headers="headers" :items="desserts" sort-by="name" class="elevation-1">
+    <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
+    <v-data-table :headers="headers" :search="search" :items="employee" loading-text="Loading... Please wait"
+      sort-by="number" class="elevation-1 mytable">
+
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Employee List</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="Search" single-line hide-details>
+          </v-text-field>
+          <v-spacer></v-spacer>
+
           <v-dialog v-model="reviewDialog" max-width="600px">
             <v-card>
               <v-card-title>
@@ -17,7 +27,6 @@
                   <v-row>
                     <v-col cols="12" sm="6" md="4">
                       <v-select :items="items" v-model="addReview.rating" label="Rating"></v-select>
-                      <!-- <v-text-field v-model="addReview.rating" label="Rating"></v-text-field> -->
                     </v-col>
                     <v-col cols="12" sm="6" md="4">
                       <v-text-field v-model="addReview.description" label="Description"></v-text-field>
@@ -28,16 +37,18 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="reviewclose"> Cancel </v-btn>
-                <v-btn color="blue darken-1" text @click="reviewsave"> Save </v-btn>
+                <v-btn color="primary" @click="reviewclose"> Cancel </v-btn>
+                <v-btn color="success" @click="reviewsave"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
           <v-dialog v-model="dialog" max-width="600px">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="blue darken-1" dark class="mb-2" v-bind="attrs" v-on="on">
-                Add New Employee
-              </v-btn>
+              <!-- <v-btn color="primary" dark class="mb-2"> -->
+              <!-- Add New Employee -->
+              <v-icon color="primary" class="fs-48" dark right v-bind="attrs" v-on="on">mdi-plus-circle-outline</v-icon>
+              <!-- </v-btn> -->
+
             </template>
             <v-card>
               <v-card-title>
@@ -68,18 +79,18 @@
 
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" class="text-white" @click="close"> Cancel </v-btn>
-                <v-btn color="green lighten-2" class="text-white" @click="save"> Save </v-btn>
+                <v-btn color="primary" class="text-white" @click="close"> Cancel </v-btn>
+                <v-btn color="success" class="text-white" @click="save"> Save </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="550px" class="py-4">
+          <v-dialog v-model="dialogDelete" max-width="518px" class="py-4">
             <v-card class="py-5">
-              <v-card-title class="text-h5">Are you sure you want to Remove Employee</v-card-title>
+              <v-card-title class="text-h5">Are you sure you want to remove Employee</v-card-title>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" class="text-white" @click="closeDelete">Cancel</v-btn>
-                <v-btn color="green lighten-2" class="text-white" @click="deleteItemConfirm">OK</v-btn>
+                <v-btn color="success" class="text-white" @click="closeDelete">Cancel</v-btn>
+                <v-btn color="error" class="text-white" @click="deleteItemConfirm">OK</v-btn>
                 <v-spacer></v-spacer>
               </v-card-actions>
             </v-card>
@@ -87,55 +98,61 @@
         </v-toolbar>
         <template>
           <div class="text-center ma-2 v-snack">
-            <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position">
+            <v-snackbar :timeout="timeout" :color="color" :top="y === 'top'" :bottom="y === 'bottom'"
+              :right="x === 'right'" :left="x === 'left'" :vertical="mode === 'vertical'" v-model="snackbar"
+              class="v-snackbar-toast position">
               {{ text }}
-
               <template v-slot:action="{ attrs }">
-                <v-btn color="pink" text v-bind="attrs" @click="snackbar = false">
+                <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
                   Close
                 </v-btn>
               </template>
             </v-snackbar>
           </div>
         </template>
-      </template>
-
-      <template v-slot:item.actions="{item}">
-        <nuxt-link :to="`/user/edit/${item.id}`" class="text-decoration-none text-dark">
-          <v-btn class="accpet" color="blue darken-1" dark>
-            Edit
-            <v-icon class="subtitle-2" dark right> mdi-pencil </v-icon>
-          </v-btn>
+      </template>   
+      <template v-slot:item="{ item }">
+  
+        <tr class="border">
+          <td>
+            {{item.id}}
+          </td>
+          <td >
+            {{item.first_name}}
+          </td> 
+          <td>
+            {{item.email}}
+          </td>
+          <td>
+            {{item.designation}}
+          </td>
+          <td>
+            <nuxt-link :to="`/user/edit/${item.id}`" class="text-decoration-none text-dark">
+          <v-icon color="primary" class="Heading 1" dark right> mdi-pencil </v-icon>
         </nuxt-link>
-        <v-btn class="accpet" color="red" dark @click="deleteItem(item)">
-          Delete
-          <v-icon dark right class="subtitle-2"> mdi-delete </v-icon>
-        </v-btn>
-        <v-btn class="accpet" color="green lighten-2" dark @click="review(item)">
-          Review
-          <v-icon dark right class="subtitle-2"> mdi-star </v-icon>
-        </v-btn>
+        <v-icon color="error" dark right class="Heading 1" @click="deleteItem(item)"> mdi-delete </v-icon>
+        <v-icon color="success" dark right class="Heading 1" @click="review(item)"> mdi-star </v-icon>
+          </td>
+        </tr>
       </template>
       <template v-slot:no-data>
         <v-btn color="primary"> Reset </v-btn>
       </template>
     </v-data-table>
   </v-main>
-
 </template>
   
 <script>
 export default {
   layout: "userdefault",
-  // middleware:'userauth',
+  middleware:'userauth',
   data: () => ({
     data1: "",
     userid: '',
     dialog: false,
     dialogDelete: false,
     reviewDialog: false,
-    snackbar: false,
-    text: ``,
+    loading:false,
     headers: [
       {
         text: "S.no.",
@@ -145,11 +162,10 @@ export default {
       },
       { text: "First Name", value: "first_name" },
       { text: "Email", value: "email" },
-      { text: "Last Name ", value: "last_name" },
       { text: "Designation", value: "designation" },
       { text: "Actions", value: "actions", sortable: true },
     ],
-    desserts: [],
+    employee: [],
     editedIndex: -1,
     editedItem: {
       first_name: "",
@@ -159,18 +175,19 @@ export default {
       designation: "",
       password: "",
     },
-    defaultItem: {
-      name: "first_name",
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
     addReview: {
       rating: '',
       description: ''
     },
     items: ['1', '2', '3', '4', '5'],
+    snackbar: false,
+    y: 'top',
+    x: 'right',
+    mode: '',
+    timeout: 6000,
+    color: 'error',
+    text: '',
+    search: '',
   }),
   mounted() {
     this.onload();
@@ -179,10 +196,10 @@ export default {
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "NEW EMPLOYEE" : " ";
+      return this.editedIndex === -1 ? "Employees" : " ";
     },
     formReview() {
-      return this.editedIndex === -1 ? "New Review" : "Edit Review";
+      return this.editedIndex === -1 ? "Reviews" : "Edit Review";
     },
   },
 
@@ -200,6 +217,11 @@ export default {
 
   },
   methods: {
+    click() {
+      this.snackbar = true;
+
+    },
+    //Add New Reviews
     review(item) {
       this.reviewDialog = true;
       this.userid = item.id;
@@ -225,11 +247,13 @@ export default {
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = `Add Review Success`;
+            this.color = 'success'
             this.reviewDialog = false;
           }
           else {
             this.snackbar = true;
             this.text = `Something Wrong Please Check`;
+            this.color = 'error'
           }
         })
         .catch((err) => {
@@ -245,6 +269,7 @@ export default {
 
     // Get Single Sub-user-list
     async onload() {
+      this.loading = true;
       let auth = localStorage.getItem("user_access_token");
       let company_id = localStorage.getItem("user_company_id");
       const config = {
@@ -256,8 +281,12 @@ export default {
       await this.$axios
         .post("/v1/employee-list", { company_id: company_id }, config)
         .then((response) => {
-          console.log(response, "12323435456785654");
-          this.desserts = response?.data?.data;
+          console.log(response.data.code, "12323435456785654");
+          this.employee = response?.data?.data;
+          if(response.data.code == 200)
+          {
+            this.loading = false
+          }
         })
         .catch((err) => {
           console.log(err, 'error')
@@ -290,10 +319,16 @@ export default {
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = "User Create SuccessFully"
+            this.color = 'success'
             this.close();
             this.onload();
           }
-          this.desserts = response?.data?.data;
+          else {
+            this.snackbar = true;
+            this.text = "Something Wrong Please Check"
+            this.color = 'error'
+          }
+          this.employee = response?.data?.data;
         })
         .catch((err) => {
           console.log(err, 'error')
@@ -305,17 +340,19 @@ export default {
     deleteItem(item) {
       this.dialogDelete = true;
       this.data1 = item.id;
+      console.log(this.data1)
     },
 
     async deleteItemConfirm() {
       console.log(this.data1);
-      let auth = localStorage.getItem("access_token");
+      let auth = localStorage.getItem("user_access_token");
       const config = {
         headers: {
           'Content-type': 'application/json',
           Authorization: `Bearer ${auth}`,
         },
       };
+      console.log(config)
       await this.$axios
         .post(
           "/v1/delete-sub-user",
@@ -325,10 +362,11 @@ export default {
           config
         )
         .then((response) => {
-          this.desserts = response?.data?.data;
+          this.employee = response?.data?.data;
           if (response.data.code == 200) {
             this.snackbar = true;
             this.text = "Delete User SuccessFully"
+            this.color = 'success'
             this.close();
             this.onload()
           }
@@ -336,9 +374,9 @@ export default {
           console.log(err);
           this.snackbar = true;
           this.text = "Something Wrong Please Check"
+          this.color = 'error'
 
         });
-      // this.desserts.splice(this.editedIndex, 1);
       this.closeDelete();
     },
 
@@ -354,20 +392,24 @@ export default {
       });
     },
   },
-  beforeMount() {
-    let auth = localStorage.getItem("user_access_token");
-    if (auth) {
-      console.log("user login")
-    }
-    else {
-      this.$router.push(`/login`);
-      console.log("usernot login")
-    }
-  },
+  // beforeMount() {
+  //   let auth = localStorage.getItem("user_access_token");
+  //   if (auth) {
+  //     console.log("user login")
+  //   }
+  //   else {
+  //     this.$router.push(`/login`);
+  //     console.log("usernot login")
+  //   }
+  // },
 };
 </script>
   
 <style scoped>
+.theme--light.v-data-table > .v-data-table__wrapper > table > tbody > tr:not(:last-child) > td:not(.v-data-table__mobile-row){
+  border-bottom: 1px solid grey !important;
+}
+
 .accpet {
   font-size: 10px;
   width: 79px;
@@ -380,4 +422,41 @@ export default {
   padding: 0px !important;
   height: 16px !important;
 }
+
+.fs-48 {
+  font-size: 48px;
+}
+
+.v-data-table__mobile-table-row {
+  border-bottom: 1px solid grey !important;
+}
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 </style>

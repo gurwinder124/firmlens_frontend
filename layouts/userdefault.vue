@@ -2,7 +2,7 @@
   <v-app>
     <v-navigation-drawer dark color="#0b0b0b" v-model="drawer" :mini-variant="miniVariant" :clipped="clipped" fixed app>
       <v-list>
-        <v-list-item v-for="(item) in dashboard" :key="item.title" :to="item.to" router exact
+        <v-list-item v-for="(item) in dashboard" :loading="loading" :key="item.title" :to="item.to" router exact
           class="text-decoration-none">
           <v-list-item-action>
             <v-icon>{{ item.icon }}</v-icon>
@@ -32,36 +32,23 @@
       <v-btn class="" v-on:click="logout">
         Logout
       </v-btn>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
+      <!-- <v-btn icon @click.stop="rightDrawer = !rightDrawer">
         <v-icon>mdi-menu</v-icon>
-      </v-btn>
+      </v-btn> -->
     </v-app-bar>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
 
-    </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
+    <!-- <v-footer :absolute="!fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+    </v-footer> -->
 
   </v-app>
 
 </template>
-  
 <script>
 import Vue from 'vue'
 import axios from 'axios'
@@ -73,11 +60,15 @@ export default {
       clipped: true,
       drawer: false,
       fixed: false,
+      loading: false,
       dashboard: [
         {
           icon: 'mdi-home',
           title: 'Dashboard',
-          to: '/user'
+          to: '/user',
+          onclick:()=>{
+            this.loading=true;
+          }
         },
         {
           icon: 'mdi-account-multiple',
@@ -87,7 +78,8 @@ export default {
         {
           icon: 'mdi-bank',
           title: 'Find Company',
-          to: '/user/findCompany'
+          to: '/user/findCompany',
+        
         },
         // {
         //   icon:'mdi-account-multiple',
@@ -105,7 +97,10 @@ export default {
         {
           icon: 'mdi-account-multiple',
           title: 'Find Company',
-          to: '/user/findCompany'
+          to: '/user/findCompany',
+          onclick:()=>{
+            this.loading=true;
+          }
         },
         {
           icon: 'mdi-account-multiple',
@@ -122,6 +117,10 @@ export default {
   },
   methods:
   {
+    dialog1 (val) {
+        if (!val) return
+        setTimeout(() => (this.dialog1 = false), 4000)
+      },
     async logout() {
       let auth = localStorage.getItem("user_access_token")
       const config = {
@@ -166,5 +165,33 @@ export default {
   opacity: 0.30;
   border-radius: 20px;
 }
+.loading-page {
+      position: fixed;
+      top: 334px;
+    right: 536px;
+      z-index: 1000;
+      padding: 1rem;
+      text-align: center;
+      font-size: 4rem;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading {
+      display: inline-block;
+      width: 11.5rem;
+    height: 11.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 </style>
   

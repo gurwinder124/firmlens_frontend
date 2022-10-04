@@ -9,7 +9,7 @@
             @input="$v.company_name.$touch()"></v-text-field>
           <v-text-field class="m-20" v-model="edituser.company_type" filled
             :error-messages="edituser.company_typeErrors" :counter="15" label="Company Type" required
-            @input="$v.company_type.$touch()" @blur="$v.edituser.company_type.$touch()"></v-text-field>
+            @input="$v.company_type.$touch()"></v-text-field>
         </div>
         <div class="d-flex">
           <v-text-field class="m-20" v-model="edituser.domain_name" filled :error-messages="edituser.domain_nameErrors"
@@ -17,11 +17,8 @@
           <v-text-field type="file" truncate-length="15" v-model="edituser.company_logo"
           :error-messages="edituser.company_logoErrors"  @input="$v.company_logo.$touch()"  @blur="$v.company_logo.$touch()"
           ></v-text-field>
-          <!-- <v-file-input  type="file" multiple class="m-20" v-model="edituser.company_logo" filled
-            :error-messages="edituser.company_logoErrors" label="Company logo" required @input="$v.company_logo.$touch()"
-            @blur="$v.company_logo.$touch()"></v-file-input> -->
         </div>
-        <v-btn class="mr-4 bg-primary" @click="submit">
+        <v-btn class="mr-4" color="success" @click="submit">
           Edit
         </v-btn>
       </form>
@@ -105,13 +102,8 @@ export default {
         Authorization: `Bearer ${auth}`,
       },
     };
-    console.log('bsdkhbaskjd')
-    console.log(`${this.$route.params.id}`);
     this.$axios.get(`/v1/edit-company`, config).then((resp) => {
-      console.log(resp.data.data, "nfskjsdfkjbdksj");
       this.edituser = resp.data.data
-      // console.log(this.edituser, "nfskjsdfkjbdksj");
-
     })
   },
   methods: {
@@ -134,7 +126,7 @@ export default {
           company_logo:this.edituser.company_logo,
         }, config)
         .then((resp) => {
-          console.log(resp.data.data,"fjheifhrueig")
+          console.log(resp,"edit response");
           if(resp.data.code == 200)
           {
             this.snackbar = true;

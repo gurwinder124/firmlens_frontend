@@ -42,9 +42,9 @@
       <v-btn icon @click.stop="clipped = !clipped">
         <v-icon>mdi-application</v-icon>
       </v-btn>
-      <v-btn icon @click.stop="fixed = !fixed">
+      <!-- <v-btn icon @click.stop="fixed = !fixed">
         <v-icon>mdi-minus</v-icon>
-      </v-btn>
+      </v-btn> -->
       <v-toolbar-title v-text="title" />
 
       <v-spacer />
@@ -54,31 +54,14 @@
       <v-btn class="" v-on:click="logout">
         Logout
       </v-btn>
-      <v-btn icon @click.stop="rightDrawer = !rightDrawer">
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+
     </v-app-bar>
     <v-main>
       <v-container>
         <Nuxt />
       </v-container>
     </v-main>
-    <v-navigation-drawer v-model="rightDrawer" :right="right" temporary fixed>
-      <v-list>
-        <v-list-item @click.native="right = !right">
-          <v-list-item-action>
-            <v-icon light>
-              mdi-repeat
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-title>Switch drawer (click me)</v-list-item-title>
-        </v-list-item>
-      </v-list>
-
-    </v-navigation-drawer>
-    <v-footer :absolute="!fixed" app>
-      <span>&copy; {{ new Date().getFullYear() }}</span>
-    </v-footer>
+ 
 
   </v-app>
 
@@ -168,4 +151,32 @@ export default {
   opacity: 0.30;
   border-radius: 20px;
 }
+.loading-page {
+      position: fixed;
+      top: 230px;
+    right: 494px;
+      z-index: 1000;
+      padding: 1rem;
+      text-align: center;
+      font-size: 4rem;
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loading {
+      display: inline-block;
+      width: 8.5rem;
+    height: 8.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 </style>

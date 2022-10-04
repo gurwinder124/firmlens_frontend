@@ -33,7 +33,7 @@
                             <h5>Status</h5>
                             <h5>Pending</h5>
                         </div>
-                        <div class="col-12 d-flex justify-content-between" v-if="companyDetails.request_status == 2">
+                        <div class="col-12 d-flex justify-content-between" v-else-if="companyDetails.request_status == 2">
                             <h5>Status</h5>
                             <h5>Accpted</h5>
                         </div>
@@ -48,8 +48,6 @@
     </div>
 </template>
 <script>
-import { type } from 'os';
-
 export default {
     layout: 'default',
     data: () => ({
@@ -61,13 +59,6 @@ export default {
             type: '',
             status: ''
         },
-        // defaultItem: {
-        //   name: "",
-        //   calories: 0,
-        //   fat: 0,
-        //   carbs: 0,
-        //   protein: 0,
-        // },
     }),
 
     methods: {
@@ -75,11 +66,6 @@ export default {
             this.dialog = false;
         },
         save() {
-            if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
-            } else {
-                this.desserts.push(this.editedItem);
-            }
             this.close();
         },
     },

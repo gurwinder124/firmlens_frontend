@@ -17,13 +17,21 @@
           <v-text-field class="m-20" v-model="edituser.email" filled :error-messages="edituser.emailErrors"
             label="E-mail" required @input="$v.email.$touch()" @blur="$v.email.$touch()"></v-text-field>
         </div>
-        <v-btn class="mr-4 bg-primary" @click="submit">
+        <v-btn class="mr-4" color="success" @click="submit">
           Edit
         </v-btn>
       </form>
       <template>
-        <div class="text-center ma-2 v-snack">
-          <v-snackbar v-model="snackbar" right top class="v-snackbar-toast position">
+        <div class="text-center ma-2 v-snack" color="success">
+          <v-snackbar 
+          :timeout="timeout"
+             :color="color" 
+             :top="y === 'top'"
+              :bottom="y === 'bottom'"
+              :right="x === 'right'"
+               :left="x === 'left'" 
+              :vertical="mode === 'vertical'"
+          v-model="snackbar" class="v-snackbar-toast position">
             {{ text }}
 
             <template v-slot:action="{ attrs }">
@@ -58,7 +66,14 @@ export default {
         last_name: '',
         designation: '',
         email: '',
-      }
+      },
+      snackbar: false,
+    y: 'top',
+    x: 'right',
+    mode: '',
+    timeout: 6000,
+    color: 'error',
+    text: ''
     }
   },
   computed: {
@@ -99,19 +114,14 @@ export default {
         Authorization: `Bearer ${auth}`,
       },
     };
-    console.log('bsdkhbaskjd')
     console.log(`${this.$route.params.id}`);
     this.$axios.get(`v1/sub-user/${this.$route.params.id}`, config).then((resp) => {
-      console.log(resp, "nfskjsdfkjbdksj");
       this.edituser = resp.data.user
-      console.log(this.edituser.first_name, "nfskjsdfkjbdksj");
-
     })
   },
 
   methods: {
     async submit() {
-      console.log(this.edituser, "fksdnfkjsdbg")
       this.$v.$touch()
       let auth = localStorage.getItem("user_access_token");
       const config = {
@@ -133,21 +143,16 @@ export default {
           if (resp.data.code == 200) {
             this.snackbar = true;
             this.text = `${resp.data.msg}`;
+            this.color = 'success'
             this.$router.push("/user/employeelist")
           }
           else {
             this.snackbar = true;
             this.text = "Something Wrong Please Check"
+            this.color = 'error'
           }
         })
     },
-    // clear() {
-    //   this.$v.$reset()
-    //   this.first_name = ''
-    //   this.email = ''
-    //   this.last_name = ""
-    //   this.designation = ''
-    // },
   },
 }
 </script>

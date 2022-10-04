@@ -1,5 +1,4 @@
 <template>
-
   <v-main>
     <div class="ml-6 d-flex align-center justify-content-between container">
       <div class="row">

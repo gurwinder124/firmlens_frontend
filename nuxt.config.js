@@ -24,8 +24,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     // this line include bootstrap.css in each html file on generate 
-    'bootstrap/dist/css/bootstrap.css',
-    
+    'bootstrap/dist/css/bootstrap.css',    
   ],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
@@ -49,7 +48,15 @@ export default {
    //baseURL:'http://127.0.0.1:8000/api'
     baseURL:'https://stgps.appsndevs.com/firmlens-backend/api/'
   },
-
+  ssr: false,
+  loading: '~/components/LoadingBar.vue',
+  loading: {
+      name: 'circle',
+    color: 'DodgerBlue',
+    height: '10px',
+    continuous: true,
+    duration: 3000
+  },
   // Vuetify module configuration: https://go.nuxtjs.dev/config-vuetify
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
@@ -69,9 +76,8 @@ export default {
     }
   },
   // router: {
-  //   base: '/firmlens/',
+  //   middleware : ['userauth']
   // },
-
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     publicPath: 'https://stgn.appsndevs.com/firmlens/'

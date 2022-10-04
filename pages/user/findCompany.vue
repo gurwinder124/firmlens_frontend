@@ -1,100 +1,97 @@
-
 <template>
-
-    <div class="container mt-4">
-        <div class="row">
-            <div class="col-4">
-                <h3>Find Company</h3>
-            </div>
-            <div class="col-4 offset-4 ">
-                <v-text-field hide-details prepend-icon="mdi-magnify" single-line placeholder="Search Company"
-                    v-model="search" as="search" v-on:input="searchItem"></v-text-field>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xl-12 col-12">
-                <table class="w-100">
-                    <thead>
-                        <th class="fs-18 color w-25">Company Logo</th>
-                        <th class="fs-18 color w-25">Company List</th>
-                        <th class="fs-18 color w-25">Rating</th>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(company_list,id) in Company_list" :key="company_list.id" class="height">
-                            <!-- <td v-if="company_lis.image == ''">
-                            <div class="w-25 ">
-                            <img src="../../assets/imges/companylogo.png" alt="">
-                        </div>
-                        </td> -->
-                            <td>
-                                <div class="w-15 ">
-                                    <img src="../../assets/imges/companylogo.png" class="w-50" alt="">
+    <v-main class="p-0 mt-10">
+        <v-spacer></v-spacer>
+        <v-toolbar-title>Find Company</v-toolbar-title>
+            <template v-for="company_list in pageOfItems" :loading="loading">
+                <v-hover v-slot="{ hover }">
+                    <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }"
+                        class="mx-auto pa-6 grey lighten-2 transition-swing mx-auto my-12 d-flex flex-column">
+                        <template slot="progress">
+                            <v-progress-linear color="deep-purple" height="5" indeterminate></v-progress-linear>
+                        </template>
+                        <v-row>
+                            <v-col class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                                <div class="w-100">
+                                    <img height="100" size="80" src="../../assets/imges/companylogo.png" />
                                 </div>
-                            </td>
-
-                            <td>
-                                <div class="card mb-4 border-0 width">
-                                    <h5 class="border-0">{{company_list.company_name}}</h5>
-                                    <li>{{company_list.company_type}}</li>
-                                    <v-btn class="w-50">HR Contact</v-btn>
+                            </v-col>
+                            <v-col class=" col-lg-4 col-md-6 sm12  col-sm-6 col-xs-12">
+                                <div class="w-100">
+                                    <v-card-title>{{company_list.company_name}}</v-card-title>
+                                    <v-card-text>
+                                        <v-row align="center" class="mx-0">
+                                        </v-row>
+                                        <div class="my-4 text-subtitle-1 ">
+                                            {{company_list.company_type}}
+                                        </div>
+                                    </v-card-text>
                                 </div>
-                            </td>
-                            <td>
-                                <div class="card m-4 mb-4 border-0">
-                                    <div class="d-flex">
-
+                            </v-col>
+                            <v-col class="col-lg-4 col-md-8 col-sm-6 col-xs-12">
+                                <v-card-actions>
+                                    <div class="d-flex flex-column ">
+                                        <v-rating :value="4.5" color="warning" dense half-increments readonly size="14">
+                                        </v-rating>
+                                        <v-btn color="success" outlined class="ma-2">
+                                            HR Contact
+                                        </v-btn>
                                     </div>
-                                    <p>Company Description</p>
-
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </v-card-actions>
+                            </v-col>
+                        </v-row>
+                    </v-card>
+                </v-hover>
+            </template>
+            <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
+         <div class="d-flex justify-center" >
+             <jw-pagination :items="Company_list" @changePage="onChangePage"></jw-pagination>
             </div>
-        </div>
-    </div>
+   
+    </v-main>
 
 </template>
-    
 <script>
-
+import Vue from "vue";
+import JwPagination from 'jw-vue-pagination';
+Vue.component('jw-pagination', JwPagination);
 export default {
     layout: "userdefault",
+    middleware:['userauth'],
     data() {
         return {
+            pageOfItems: [],
             Company_list: [],
             company_list1: [],
+            loading:false,
+            page: 1,
             key: '',
             search: "",
             company: [
-                {
-                    title: 'Company List',
-                },
-                {
-                    title: 'Company Pending',
-                },
-                {
-                    title: 'Company Approved',
-                },
+                {title: 'Company List', },
+                { title: 'Company Pending',},
+                {title: 'Company Approved'},
             ],
         }
     },
 
     mounted() {
-        let auth = localStorage.getItem("user_access_token");
-        if (auth) {
-            console.log("user login")
+        // let auth = localStorage.getItem("user_access_token");
+        // if (auth) {
+        //     console.log("user login")
             this.onload();
-        }
-        else {
-            this.$router.push(`/login`);
-            console.log("usernot login")
-        }
+        // }
+        // else {
+        //     this.$router.push(`/login`);
+        //     console.log("usernot login")
+        // }
     },
     methods: {
+        onChangePage(pageOfItems) {
+            this.pageOfItems = pageOfItems;
+        },
         searchItem() {
-
             let data = [];
             this.search
             this.Company_list.map((ele) => {
@@ -103,10 +100,10 @@ export default {
                     data.push(ele)
                 }
                 this.Company_list1 = data
-                console.log(this.Company_list1, "ele")
             })
         },
         async onload() {
+            this.loading = true
 
             let auth = localStorage.getItem('user_access_token');
             let company_id = localStorage.getItem('user_company_id');
@@ -122,7 +119,13 @@ export default {
                     config
                 )
                 .then((response) => {
+                    console.log(response)
                     this.Company_list = response.data.data
+                    if(response.data.code == 200)
+                    {
+            this.loading = false
+                        
+                    }
                 });
         }
     }
@@ -130,6 +133,12 @@ export default {
 </script>
     
 <style scoped>
+    .page-item .page-number {
+  
+    color: #0a0a0a !important;
+    background-color: #fff;
+    border: 1px solid #dee2e6;
+}
 .v-rating button {
     font-size: 20px !important;
 }
@@ -138,6 +147,35 @@ export default {
     height: 157px !important;
     border-bottom: 8px solid #e3dddd;
 }
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 
 .edit {
     padding: 5px;

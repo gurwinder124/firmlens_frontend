@@ -67,6 +67,7 @@ import { required, email } from 'vuelidate/lib/validators'
 export default {
   layout: 'auth',
   name: "loginPage",
+  // middleware:['userauth'],
   mixins: [validationMixin],
   validations: {
     email: { required, email },

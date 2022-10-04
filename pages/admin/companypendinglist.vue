@@ -1,6 +1,9 @@
 
 <template>
   <v-main class="p-0 mt-4">
+    <div v-if="loading" class="loading-page ">
+        <div class="loading"></div>
+         </div>
     <v-data-table :headers="headers" :items="desserts" sort-by="calories" class="elevation-1">
     <template v-slot:top>
       <v-toolbar flat>
@@ -84,22 +87,24 @@ export default {
     ],
     desserts: [],
     editedIndex: -1,
-    editedItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      name: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+    loading:false,
+    // editedItem: {
+    //   name: '',
+    //   calories: 0,
+    //   fat: 0,
+    //   carbs: 0,
+    //   protein: 0,
+    // },
+    // defaultItem: {
+    //   name: '',
+    //   calories: 0,
+    //   fat: 0,
+    //   carbs: 0,
+    //   protein: 0,
+    // },
   }),
   mounted() {
+    this.loading = true;
     let auth = localStorage.getItem('access_token')
     if (auth) {
       const config = {
@@ -111,8 +116,12 @@ export default {
       this.$axios
         .post("/admin/company-list", { status: "1" }, config)
         .then((response) => {
-          console.log(response, "12323435456785654");
+          console.log(response.data.code, "12323435456785654");
           this.desserts = response?.data?.data?.company_list;
+          if(response.data.code == 200)
+          {
+            this.loading = false;
+          }
         });
     }
     else {
@@ -260,4 +269,33 @@ export default {
   font-size: 10px;
   width: 79px;
 }
+.loading-page {
+    position: fixed;
+    top: 345px;
+    right: 622px;
+    z-index: 1000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 4rem;
+    font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+    
+    .loading {
+      display: inline-block;
+      width: 3.5rem;
+    height: 3.5rem;
+      border: 4px solid rgba(9, 133, 81, 0.705);
+      border-radius: 50%;
+      border-top-color: #158876;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to {
+        -webkit-transform: rotate(360deg);
+      }
+    }
 </style>

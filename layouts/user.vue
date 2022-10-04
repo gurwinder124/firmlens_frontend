@@ -12,7 +12,6 @@
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="blog">Blog</v-btn>
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="Contact">Contact us</v-btn>
             <!-- <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="Company_profile">Company Profile</v-btn> -->
-
           </div>
           <div v-if="auth == null ">
             <v-btn class="bg-transparent text-light mr-4 fs-5" v-on:click="signup">Signup</v-btn>
