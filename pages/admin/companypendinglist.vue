@@ -68,6 +68,7 @@
 <script>
 export default {
   name: "companypendinglistPage",
+  middleware:['adminauth'],
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -106,7 +107,7 @@ export default {
   mounted() {
     this.loading = true;
     let auth = localStorage.getItem('access_token')
-    if (auth) {
+    // if (auth) {
       const config = {
         headers: {
           'Content-type': 'application/json',
@@ -123,11 +124,11 @@ export default {
             this.loading = false;
           }
         });
-    }
-    else {
-      this.$router.push(`/admin/login`);
-      console.log("usernot login")
-    }
+    // }
+    // else {
+    //   this.$router.push(`/admin/login`);
+    //   console.log("usernot login")
+    // }
 
 
   },
@@ -193,8 +194,8 @@ export default {
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      // this.editedIndex = this.desserts.indexOf(item)
+      // this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
 
@@ -238,26 +239,26 @@ export default {
 
     close() {
       this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+      // this.$nextTick(() => {
+      //   this.editedItem = Object.assign({}, this.defaultItem)
+      //   this.editedIndex = -1
+      // })
     },
 
     closeDelete() {
       this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
+      // this.$nextTick(() => {
+      //   this.editedItem = Object.assign({}, this.defaultItem)
+      //   this.editedIndex = -1
+      // })
     },
 
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
-      } else {
-        this.desserts.push(this.editedItem)
-      }
+      // if (this.editedIndex > -1) {
+      //   Object.assign(this.desserts[this.editedIndex], this.editedItem)
+      // } else {
+      //   this.desserts.push(this.editedItem)
+      // }
       this.close()
     },
   },

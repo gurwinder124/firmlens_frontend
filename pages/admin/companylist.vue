@@ -98,8 +98,8 @@
 
 export default {
   layout: "admin",
+  middleware:['adminauth'],
   data: () => ({
-
     data1: "",
     dialog: false,
     dialogDelete: false,
@@ -146,15 +146,15 @@ export default {
 
   mounted() {
 
-    let auth = localStorage.getItem("access_token");
-    if (auth) {
-      console.log("user login")
+    // let auth = localStorage.getItem("access_token");
+    // if (auth) {
+    //   console.log("user login")
       this.onload();
-    }
-    else {
-      this.$router.push(`/admin/login`);
-      console.log("usernot login")
-    }
+    // }
+    // else {
+    //   this.$router.push(`/admin/login`);
+    //   console.log("usernot login")
+    // }
   },
 
   watch: {

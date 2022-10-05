@@ -39,7 +39,6 @@
   </template>
   
   <script>
-  // import axios from 'axios'
   export default {
     layout: "auth",
     name: "Login",
@@ -78,17 +77,6 @@
           })
       },
   },
-  mounted() {
-    console.log("page load")
-    let auth = localStorage.getItem("user_access_token");
-    if (auth) {
-      console.log("user login")
-      this.$router.push(`/user`);
-    }
-    else {
-      console.log("user not  login")
-    }
-  }
   }
   </script>
   

@@ -38,6 +38,8 @@
 <script>
 export default {
   name: "companyapprovedlistPage",
+  layout:'default',
+  middleware:['adminauth'],
   data: () => ({
     dialog: false,
     dialogDelete: false,
@@ -59,7 +61,7 @@ export default {
   mounted() {
     this.loading= true
     let auth = localStorage.getItem('access_token')
-    if (auth) {
+    // if (auth) {
       const config = {
         headers: {
           'Content-type': 'application/json',
@@ -76,11 +78,11 @@ export default {
             this.loading = false
           }
         });
-    }
-    else {
-      this.$router.push(`/admin/login`);
-      console.log("usernot login")
-    }
+    // }
+    // else {
+    //   this.$router.push(`/admin/login`);
+    //   console.log("usernot login")
+    // }
 
   },
 }

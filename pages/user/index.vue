@@ -38,7 +38,6 @@
   </v-main>
 </template>
 <script>
-// import userauth from '../../ middleware/userauth';
 
 export default {
     layout: "userdefault",
@@ -83,8 +82,7 @@ export default {
                 Authorization: `Bearer ${auth}`,
             },
         };
-        // if (auth) {
-        //     console.log("user login");
+    
             this.$axios.get("/v1/user-stats", config).then((response) => {
                 console.log(response.data);
                 this.count = response.data.data;
@@ -92,11 +90,6 @@ export default {
                   this.loading = false
                 }
             }).catch((err) => console.log(err));
-        // }
-        // else {
-        //     this.$router.push(`/login`);
-        //     console.log("usernot login");
-        // }
         this.onload();
     },
 }

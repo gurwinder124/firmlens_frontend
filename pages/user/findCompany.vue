@@ -2,53 +2,53 @@
     <v-main class="p-0 mt-10">
         <v-spacer></v-spacer>
         <v-toolbar-title>Find Company</v-toolbar-title>
-            <template v-for="company_list in pageOfItems" :loading="loading">
-                <v-hover v-slot="{ hover }">
-                    <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }"
-                        class="mx-auto pa-6 grey lighten-2 transition-swing mx-auto my-12 d-flex flex-column">
-                        <template slot="progress">
-                            <v-progress-linear color="deep-purple" height="5" indeterminate></v-progress-linear>
-                        </template>
-                        <v-row>
-                            <v-col class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
-                                <div class="w-100">
-                                    <img height="100" size="80" src="../../assets/imges/companylogo.png" />
-                                </div>
-                            </v-col>
-                            <v-col class=" col-lg-4 col-md-6 sm12  col-sm-6 col-xs-12">
-                                <div class="w-100">
-                                    <v-card-title>{{company_list.company_name}}</v-card-title>
-                                    <v-card-text>
-                                        <v-row align="center" class="mx-0">
-                                        </v-row>
-                                        <div class="my-4 text-subtitle-1 ">
-                                            {{company_list.company_type}}
-                                        </div>
-                                    </v-card-text>
-                                </div>
-                            </v-col>
-                            <v-col class="col-lg-4 col-md-8 col-sm-6 col-xs-12">
-                                <v-card-actions>
-                                    <div class="d-flex flex-column ">
-                                        <v-rating :value="4.5" color="warning" dense half-increments readonly size="14">
-                                        </v-rating>
-                                        <v-btn color="success" outlined class="ma-2">
-                                            HR Contact
-                                        </v-btn>
+        <template v-for="company_list in pageOfItems" :loading="loading">
+            <v-hover v-slot="{ hover }">
+                <v-card :elevation="hover ? 12 : 2" :class="{ 'on-hover': hover }"
+                    class="mx-auto pa-6 grey lighten-2 transition-swing mx-auto my-12 d-flex flex-column">
+                    <template slot="progress">
+                        <v-progress-linear color="deep-purple" height="5" indeterminate></v-progress-linear>
+                    </template>
+                    <v-row>
+                        <v-col class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                            <div class="w-100">
+                                <img height="100" size="80" src="../../assets/imges/companylogo.png" />
+                            </div>
+                        </v-col>
+                        <v-col class=" col-lg-4 col-md-6 sm12  col-sm-6 col-xs-12">
+                            <div class="w-100">
+                                <v-card-title>{{company_list.company_name}}</v-card-title>
+                                <v-card-text>
+                                    <v-row align="center" class="mx-0">
+                                    </v-row>
+                                    <div class="my-4 text-subtitle-1 ">
+                                        {{company_list.company_type}}
                                     </div>
-                                </v-card-actions>
-                            </v-col>
-                        </v-row>
-                    </v-card>
-                </v-hover>
-            </template>
-            <div v-if="loading" class="loading-page ">
-        <div class="loading"></div>
-         </div>
-         <div class="d-flex justify-center" >
-             <jw-pagination :items="Company_list" @changePage="onChangePage"></jw-pagination>
-            </div>
-   
+                                </v-card-text>
+                            </div>
+                        </v-col>
+                        <v-col class="col-lg-4 col-md-8 col-sm-6 col-xs-12">
+                            <v-card-actions>
+                                <div class="d-flex flex-column ">
+                                    <v-rating :value="4.5" color="warning" dense half-increments readonly size="14">
+                                    </v-rating>
+                                    <v-btn color="success" outlined class="ma-2">
+                                        HR Contact
+                                    </v-btn>
+                                </div>
+                            </v-card-actions>
+                        </v-col>
+                    </v-row>
+                </v-card>
+            </v-hover>
+        </template>
+        <div v-if="loading" class="loading-page ">
+            <div class="loading"></div>
+        </div>
+        <div class="d-flex justify-center">
+            <jw-pagination :items="Company_list" @changePage="onChangePage"></jw-pagination>
+        </div>
+
     </v-main>
 
 </template>
@@ -58,34 +58,26 @@ import JwPagination from 'jw-vue-pagination';
 Vue.component('jw-pagination', JwPagination);
 export default {
     layout: "userdefault",
-    middleware:['userauth'],
+    middleware: ['userauth'],
     data() {
         return {
             pageOfItems: [],
             Company_list: [],
             company_list1: [],
-            loading:false,
+            loading: false,
             page: 1,
             key: '',
             search: "",
             company: [
-                {title: 'Company List', },
-                { title: 'Company Pending',},
-                {title: 'Company Approved'},
+                { title: 'Company List', },
+                { title: 'Company Pending', },
+                { title: 'Company Approved' },
             ],
         }
     },
 
     mounted() {
-        // let auth = localStorage.getItem("user_access_token");
-        // if (auth) {
-        //     console.log("user login")
-            this.onload();
-        // }
-        // else {
-        //     this.$router.push(`/login`);
-        //     console.log("usernot login")
-        // }
+        this.onload();
     },
     methods: {
         onChangePage(pageOfItems) {
@@ -114,31 +106,27 @@ export default {
                 },
             };
             await this.$axios
-                .get(
-                    `v1/company-list-byuser`,
-                    config
-                )
+                .get(`v1/company-list-byuser`,config)
                 .then((response) => {
                     console.log(response)
                     this.Company_list = response.data.data
-                    if(response.data.code == 200)
-                    {
-            this.loading = false
-                        
+                    if (response.data.code == 200) {
+                        this.loading = false
                     }
-                });
+            });
         }
     }
 };
 </script>
     
 <style scoped>
-    .page-item .page-number {
-  
+.page-item .page-number {
+
     color: #0a0a0a !important;
     background-color: #fff;
     border: 1px solid #dee2e6;
 }
+
 .v-rating button {
     font-size: 20px !important;
 }
@@ -147,6 +135,7 @@ export default {
     height: 157px !important;
     border-bottom: 8px solid #e3dddd;
 }
+
 .loading-page {
     position: fixed;
     top: 345px;
@@ -161,21 +150,22 @@ export default {
     align-items: center;
     justify-content: center;
 }
-    
-    .loading {
-      display: inline-block;
-      width: 3.5rem;
+
+.loading {
+    display: inline-block;
+    width: 3.5rem;
     height: 3.5rem;
-      border: 4px solid rgba(9, 133, 81, 0.705);
-      border-radius: 50%;
-      border-top-color: #158876;
-      animation: spin 1s ease-in-out infinite;
-    }
-    @keyframes spin {
-      to {
+    border: 4px solid rgba(9, 133, 81, 0.705);
+    border-radius: 50%;
+    border-top-color: #158876;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
         -webkit-transform: rotate(360deg);
-      }
     }
+}
 
 .edit {
     padding: 5px;
